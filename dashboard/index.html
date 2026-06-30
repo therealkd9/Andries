@@ -239,9 +239,6 @@
 <!-- ACTIONS -->
 <div class="actions">
   <span class="status" id="status">Saved automatically ✓</span>
-  <button class="btn" id="exportBtn" title="Save a backup file of all your check-ins (for a new phone, or peace of mind).">⬇ Back up</button>
-  <button class="btn" id="importBtn" title="Load check-ins back in from a backup file.">⬆ Restore</button>
-  <input type="file" id="importFile" accept="application/json" style="display:none" />
   <button class="btn danger" id="clearBtn">Reset this day</button>
 </div>
 
@@ -454,31 +451,6 @@
     clearTimeout(tmr);
     tmr = setTimeout(function () { statusEl.textContent = "Saved automatically ✓"; }, 1200);
   }
-
-  // ----- export / import -----
-  document.getElementById("exportBtn").addEventListener("click", function () {
-    var blob = new Blob([JSON.stringify(all, null, 2)], { type: "application/json" });
-    var a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "andries-checkin-" + current + ".json";
-    a.click();
-  });
-  document.getElementById("importBtn").addEventListener("click", function () {
-    document.getElementById("importFile").click();
-  });
-  document.getElementById("importFile").addEventListener("change", function (e) {
-    var file = e.target.files[0]; if (!file) return;
-    var r = new FileReader();
-    r.onload = function () {
-      try {
-        var data = JSON.parse(r.result);
-        Object.keys(data).forEach(function (k) { all[k] = data[k]; });
-        saveAll(all); loadDayIntoForm(); paint();
-        statusEl.textContent = "Imported ✓";
-      } catch (err) { alert("Could not read that file."); }
-    };
-    r.readAsText(file);
-  });
 
   // ----- reset day -----
   document.getElementById("clearBtn").addEventListener("click", function () {
