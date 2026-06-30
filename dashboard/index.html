@@ -250,7 +250,14 @@
   // Register service worker so the app installs and works offline.
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", function () {
-      navigator.serviceWorker.register("./sw.js").catch(function () {});
+      navigator.serviceWorker.register("./sw.js", { updateViaCache: "none" })
+        .then(function (reg) { reg.update(); })
+        .catch(function () {});
+      // When a new version takes over, reload once so you see it immediately.
+      var reloaded = false;
+      navigator.serviceWorker.addEventListener("controllerchange", function () {
+        if (reloaded) return; reloaded = true; window.location.reload();
+      });
     });
   }
 
