@@ -146,6 +146,8 @@
     <div class="datebar">
       <span class="pill">🔥 Streak <b id="streak">0</b></span>
       <input type="date" id="datePicker" />
+      <button class="btn" id="authBtn" style="display:none">Sign in to sync</button>
+      <span class="pill" id="syncPill" style="display:none">☁️ <b id="syncState">…</b></span>
     </div>
   </header>
 
@@ -453,16 +455,32 @@
   // ----- persistence + status -----
   var statusEl = document.getElementById("status"), tmr;
   function persist() {
+    if (all[current]) all[current]._u = Date.now(); // per-day edit timestamp for sync merge
     saveAll(all);
     statusEl.textContent = "Saved ✓";
     clearTimeout(tmr);
     tmr = setTimeout(function () { statusEl.textContent = "Saved automatically ✓"; }, 1200);
+    if (window.__andriesPush) window.__andriesPush(); // let the sync layer push if signed in
   }
 
-  // ----- reset day -----
+  // Merge a remote copy into local: newer per-day timestamp wins. Returns true if anything changed.
+  function mergeRemote(remote) {
+    if (!remote) return false;
+    var changed = false;
+    Object.keys(remote).forEach(function (k) {
+      var r = remote[k], l = all[k];
+      var ru = (r && r._u) || 0, lu = (l && l._u) || 0;
+      if (!l || ru > lu) { all[k] = r; changed = true; }
+    });
+    if (changed) { saveAll(all); loadDayIntoForm(); paint(); }
+    return changed;
+  }
+
+  // ----- reset day ----- (stamp an empty day so the clear syncs to other devices)
   document.getElementById("clearBtn").addEventListener("click", function () {
     if (!confirm("Clear everything for " + current + "?")) return;
-    delete all[current]; saveAll(all); loadDayIntoForm(); paint();
+    all[current] = { _u: Date.now() }; saveAll(all); loadDayIntoForm(); paint();
+    if (window.__andriesPush) window.__andriesPush();
   });
 
   // ----- date picker -----
@@ -477,6 +495,93 @@
   bindInputs();
   loadDayIntoForm();
   paint();
+
+  // ----- API for the optional cloud-sync layer (see the module script below) -----
+  window.Andries = {
+    getDays: function () { return all; },
+    applyRemote: function (remote) { return mergeRemote(remote); },
+    setPush: function (fn) { window.__andriesPush = fn; }
+  };
+})();
+</script>
+
+<!-- Optional cloud sync (Google Sign-In + Firebase). Inert until you fill in firebase-config.js. -->
+<script type="module">
+import { firebaseConfig } from "./firebase-config.js";
+(async function () {
+  // Stay local-only until a real config is pasted in.
+  if (!firebaseConfig || !firebaseConfig.apiKey || /PASTE/.test(firebaseConfig.apiKey)) return;
+
+  var V = "https://www.gstatic.com/firebasejs/10.12.2";
+  var appMod, authMod, fsMod;
+  try {
+    appMod  = await import(V + "/firebase-app.js");
+    authMod = await import(V + "/firebase-auth.js");
+    fsMod   = await import(V + "/firebase-firestore.js");
+  } catch (e) { return; } // offline / blocked → app keeps working locally
+
+  var app = appMod.initializeApp(firebaseConfig);
+  var auth = authMod.getAuth(app);
+  var db = fsMod.getFirestore(app);
+  var provider = new authMod.GoogleAuthProvider();
+
+  var authBtn = document.getElementById("authBtn");
+  var syncPill = document.getElementById("syncPill");
+  var syncState = document.getElementById("syncState");
+  function setState(t) { syncState.textContent = t; }
+
+  authBtn.style.display = "";
+  authBtn.addEventListener("click", async function () {
+    if (auth.currentUser) { await authMod.signOut(auth); return; }
+    try { await authMod.signInWithPopup(auth, provider); }
+    catch (e) { try { await authMod.signInWithRedirect(auth, provider); } catch (_) {} }
+  });
+
+  var unsub = null, pushTimer = null, ref = null;
+
+  async function pushNow() {
+    if (!ref) return;
+    try {
+      await fsMod.setDoc(ref, { days: window.Andries.getDays(), updatedAt: Date.now() });
+      setState("synced ✓");
+    } catch (e) { setState("offline"); }
+  }
+
+  authMod.onAuthStateChanged(auth, async function (user) {
+    if (unsub) { unsub(); unsub = null; }
+    if (!user) {
+      authBtn.textContent = "Sign in to sync";
+      authBtn.style.display = "";
+      syncPill.style.display = "none";
+      window.Andries.setPush(null);
+      return;
+    }
+    authBtn.textContent = "Sign out";
+    syncPill.style.display = "";
+    setState("syncing…");
+    ref = fsMod.doc(db, "checkins", user.uid);
+
+    // initial pull + merge, then push the merged result back up
+    try {
+      var snap = await fsMod.getDoc(ref);
+      window.Andries.applyRemote(snap.exists() ? (snap.data().days || {}) : {});
+    } catch (e) {}
+    await pushNow();
+
+    // live updates from your other devices
+    unsub = fsMod.onSnapshot(ref, function (s) {
+      if (!s.exists() || s.metadata.hasPendingWrites) return; // skip our own local echo
+      window.Andries.applyRemote(s.data().days || {});
+      setState("synced ✓");
+    });
+
+    // local edits → debounced push to the cloud
+    window.Andries.setPush(function () {
+      setState("syncing…");
+      clearTimeout(pushTimer);
+      pushTimer = setTimeout(pushNow, 1200);
+    });
+  });
 })();
 </script>
 </body>

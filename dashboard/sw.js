@@ -1,10 +1,11 @@
 // Service worker: installable + offline, but always prefers fresh content
 // so updates show up without getting stuck on an old cached version.
-const CACHE = "andries-checkin-v3";
+const CACHE = "andries-checkin-v4";
 const ASSETS = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
+  "./firebase-config.js",
   "./icon-192.png",
   "./icon-512.png",
   "./apple-touch-icon.png"
@@ -26,6 +27,9 @@ self.addEventListener("activate", (e) => {
 self.addEventListener("fetch", (e) => {
   if (e.request.method !== "GET") return;
   const url = new URL(e.request.url);
+  // Never intercept cross-origin requests (Firebase SDK, Google auth, etc.) —
+  // let them go straight to the network.
+  if (url.origin !== self.location.origin) return;
   const isPage =
     e.request.mode === "navigate" ||
     url.pathname.endsWith("/") ||
