@@ -238,9 +238,9 @@
 
 <!-- ACTIONS -->
 <div class="actions">
-  <span class="status" id="status">Auto-saving on.</span>
-  <button class="btn" id="exportBtn">⬇ Export JSON</button>
-  <button class="btn" id="importBtn">⬆ Import JSON</button>
+  <span class="status" id="status">Saved automatically ✓</span>
+  <button class="btn" id="exportBtn" title="Save a backup file of all your check-ins (for a new phone, or peace of mind).">⬇ Back up</button>
+  <button class="btn" id="importBtn" title="Load check-ins back in from a backup file.">⬆ Restore</button>
   <input type="file" id="importFile" accept="application/json" style="display:none" />
   <button class="btn danger" id="clearBtn">Reset this day</button>
 </div>
@@ -452,7 +452,7 @@
     saveAll(all);
     statusEl.textContent = "Saved ✓";
     clearTimeout(tmr);
-    tmr = setTimeout(function () { statusEl.textContent = "Auto-saving on."; }, 1200);
+    tmr = setTimeout(function () { statusEl.textContent = "Saved automatically ✓"; }, 1200);
   }
 
   // ----- export / import -----
