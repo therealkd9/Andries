@@ -21,7 +21,7 @@ Update the level as each rung graduates. Goal: push everything rightward over we
 
 | # | Step | Now | Target | Notes |
 |---|---|---|---|---|
-| 1 | Pick targets (niche + criteria) | 🟡 | 🟢 | Locking niche with Andries |
+| 1 | Pick targets (niche + criteria) | 🟢 | 🟢 | ✅ DONE: home services, cold |
 | 2 | Find & research leads | 🔴 | 🟢 | First skill to build |
 | 3 | Write outreach | 🔴 | 🟢 | Templates exist; personalize per lead |
 | 4 | Send outreach | 🔴 | 🟡→🟢 | Needs "hands" (PC) to send at scale |
@@ -54,4 +54,6 @@ Newest at top. Each entry: date · what happened · what we improved · next run
 - **Built:** the Operator's brain (charter, offer draft, ICP, templates, objections,
   pipeline) and this growth plan.
 - **Decided:** no warm contacts → going cold with a proven niche.
-- **Next rung:** #1 lock the niche, then #2 build the lead-research skill.
+- **✅ Rung #1 locked:** niche = **home services** (plumbing, HVAC, roofing,
+  electrical, landscaping), cold outreach.
+- **Next rung:** #2 — teach the Operator to find real leads (needs a target city).

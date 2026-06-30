@@ -1,5 +1,9 @@
 # The Offer — v1 DRAFT (react to this, don't start from blank)
 
+> ✅ **LOCKED 2026-06-30 — Niche: home-service businesses, cold outreach.**
+> (HVAC, plumbing, roofing, electrical, landscaping.) Channel + pricing emphasis
+> still open.
+
 > This is a starting point built to be argued with. The single most important
 > decision is the **niche**. Everything else (message, price, delivery) follows.
 > Andries: read this, change what's wrong, and the Operator runs with the result.
