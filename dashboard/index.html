@@ -127,6 +127,15 @@
   .trend .val { font-size: 10px; color: var(--muted); }
   .empty-tip { color: var(--muted); font-size: 13px; }
 
+  /* Verse banner */
+  .verse { background: linear-gradient(180deg, #171a2b, var(--panel)); border: 1px solid var(--line); border-left: 3px solid var(--spirit); border-radius: 14px; padding: 14px 18px; margin-bottom: 18px; }
+  .verse .t { font-size: 15px; font-style: italic; color: var(--text); line-height: 1.55; }
+  .verse .r { font-size: 12px; color: var(--spirit); margin-top: 7px; letter-spacing: .8px; text-transform: uppercase; }
+
+  /* Auto "repeat" insight */
+  #repeatInsight .head { font-size: 15px; color: var(--text); margin-bottom: 6px; }
+  #repeatInsight b.up { color: var(--good); }
+
   /* Footer actions */
   .actions { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(12,14,20,.9); backdrop-filter: blur(8px); border-top: 1px solid var(--line); padding: 12px 18px calc(12px + env(safe-area-inset-bottom)); display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap; }
   .actions .status { color: var(--muted); font-size: 12px; margin-right: auto; }
@@ -145,11 +154,18 @@
     </div>
     <div class="datebar">
       <span class="pill">🔥 Streak <b id="streak">0</b></span>
+      <span class="pill">💵 $<b id="revToday">0</b></span>
       <input type="date" id="datePicker" />
       <button class="btn" id="authBtn" style="display:none">Sign in to sync</button>
       <span class="pill" id="syncPill" style="display:none">☁️ <b id="syncState">…</b></span>
     </div>
   </header>
+
+  <!-- DAILY VERSE -->
+  <div class="verse" id="verse" style="display:none">
+    <div class="t" id="verseText"></div>
+    <div class="r" id="verseRef"></div>
+  </div>
 
   <!-- SUMMARY -->
   <div class="summary">
@@ -216,6 +232,7 @@
       <div class="cat-head"><span class="dot" style="background:var(--work)"></span><h3>💵 Work</h3></div>
       <div class="row"><div><label>Deep work block</label><span class="hint">Focused, building — not busywork.</span></div><label class="toggle"><input type="checkbox" data-k="work.deep"><span class="sl"></span></label></div>
       <div class="row"><div><label>Revenue-moving action</label><span class="hint">Outreach, offer, delivery, a sale.</span></div><label class="toggle"><input type="checkbox" data-k="work.revenue"><span class="sl"></span></label></div>
+      <div class="row"><div><label>Revenue today ($)</label><span class="hint">Money in today — even $0 is data worth tracking.</span></div><input class="num" type="number" min="0" step="1" data-k="work.revenueAmount"></div>
       <div class="row"><div><label>Momentum</label><span class="hint">Did the business move today, 1–5.</span></div><div class="scale" data-k="work.momentum"></div></div>
       <div class="field-lbl" style="margin-top:12px;">Biggest win today</div>
       <textarea data-k="work.win" placeholder="The one thing that mattered most…"></textarea>
@@ -231,9 +248,9 @@
       <textarea data-k="why.worked" placeholder="What specifically went right, and what caused it?"></textarea>
     </div>
     <div class="card why">
-      <div class="cat-head" style="justify-content:space-between;"><h3>Do again tomorrow</h3><span class="badge">repeatable</span></div>
-      <p class="empty-tip" style="margin-bottom:6px;">If you could only keep one habit from today, what is it?</p>
-      <textarea data-k="why.repeat" placeholder="The one move worth repeating…"></textarea>
+      <div class="cat-head" style="justify-content:space-between;"><h3>Repeat tomorrow</h3><span class="badge">auto</span></div>
+      <p class="empty-tip" style="margin-bottom:10px;">Pulled from your own data — the habit that most lifts your best days.</p>
+      <div id="repeatInsight"></div>
     </div>
   </div>
 </div>
@@ -368,7 +385,11 @@
       document.getElementById("f-" + p[0]).style.width = p[1] + "%";
     });
     document.getElementById("streak").textContent = computeStreak();
+    var rev = get(day, "work.revenueAmount");
+    document.getElementById("revToday").textContent =
+      (typeof rev === "number" && !isNaN(rev)) ? rev.toLocaleString() : "0";
     paintTrend();
+    renderRepeat();
   }
 
   function paintTrend() {
@@ -490,10 +511,129 @@
     current = dp.value || todayStr(); loadDayIntoForm(); paint();
   });
 
+  // ----- daily Bible verse (offline, rotates by day) -----
+  var VERSES = [
+    { t: "For I know the thoughts that I think toward you, says the Lord, thoughts of peace, and not of evil, to give you hope and a future.", r: "Jeremiah 29:11" },
+    { t: "Trust in the Lord with all your heart, and don't lean on your own understanding. In all your ways acknowledge him, and he will make your paths straight.", r: "Proverbs 3:5–6" },
+    { t: "I can do all things through Christ who strengthens me.", r: "Philippians 4:13" },
+    { t: "Be strong and courageous. Don't be afraid, neither be dismayed, for the Lord your God is with you wherever you go.", r: "Joshua 1:9" },
+    { t: "Commit your works to the Lord, and your plans will be established.", r: "Proverbs 16:3" },
+    { t: "Whatever you do, work heartily, as for the Lord and not for men.", r: "Colossians 3:23" },
+    { t: "Seek first God's Kingdom and his righteousness, and all these things will be given to you as well.", r: "Matthew 6:33" },
+    { t: "Those who wait for the Lord will renew their strength. They will mount up with wings like eagles. They will run, and not be weary.", r: "Isaiah 40:31" },
+    { t: "Delight yourself in the Lord, and he will give you the desires of your heart.", r: "Psalm 37:4" },
+    { t: "The plans of the diligent surely lead to profit; and everyone who is hasty surely rushes to poverty.", r: "Proverbs 21:5" },
+    { t: "Let us not be weary in doing good, for we will reap in due season if we don't give up.", r: "Galatians 6:9" },
+    { t: "Don't be anxious about anything, but in everything, by prayer and petition with thanksgiving, let your requests be made known to God.", r: "Philippians 4:6" },
+    { t: "Wealth gained dishonestly dwindles away, but he who gathers by labor makes it grow.", r: "Proverbs 13:11" },
+    { t: "For God didn't give us a spirit of fear, but of power, love, and self-control.", r: "2 Timothy 1:7" },
+    { t: "We know that all things work together for good for those who love God, who are called according to his purpose.", r: "Romans 8:28" },
+    { t: "He will be like a tree planted by the streams of water, that produces its fruit in its season. Whatever he does shall prosper.", r: "Psalm 1:3" },
+    { t: "Don't be anxious for tomorrow, for tomorrow will be anxious for itself. Each day's own trouble is enough.", r: "Matthew 6:34" },
+    { t: "Iron sharpens iron; so a man sharpens his friend's countenance.", r: "Proverbs 27:17" },
+    { t: "Be steadfast, immovable, always abounding in the Lord's work, because you know that your labor is not in vain.", r: "1 Corinthians 15:58" },
+    { t: "Honor the Lord with your wealth, with the first fruits of all your increase; so your barns will be filled with plenty.", r: "Proverbs 3:9–10" },
+    { t: "Don't be afraid, for I am with you. Don't be dismayed, for I am your God. I will strengthen you. Yes, I will help you.", r: "Isaiah 41:10" },
+    { t: "If any of you lacks wisdom, let him ask of God, who gives to all generously and without finding fault, and it will be given to him.", r: "James 1:5" },
+    { t: "A man's heart plans his course, but the Lord directs his steps.", r: "Proverbs 16:9" },
+    { t: "Establish the work of our hands for us; yes, establish the work of our hands.", r: "Psalm 90:17" },
+    { t: "Come to me, all you who labor and are heavily burdened, and I will give you rest.", r: "Matthew 11:28" },
+    { t: "Do you see a man skilled in his work? He will serve kings; he won't serve obscure men.", r: "Proverbs 22:29" },
+    { t: "He who began a good work in you will carry it on to completion until the day of Christ Jesus.", r: "Philippians 1:6" },
+    { t: "My help comes from the Lord, who made heaven and earth.", r: "Psalm 121:2" },
+    { t: "Lazy hands make for poverty, but diligent hands bring wealth.", r: "Proverbs 10:4" },
+    { t: "Cast all your worries on him, because he cares for you.", r: "1 Peter 5:7" },
+    { t: "Be transformed by the renewing of your mind.", r: "Romans 12:2" },
+    { t: "Keep your heart with all diligence, for out of it is the wellspring of life.", r: "Proverbs 4:23" },
+    { t: "This is the day that the Lord has made. We will rejoice and be glad in it.", r: "Psalm 118:24" },
+    { t: "Let your light shine before men, that they may see your good works and glorify your Father in heaven.", r: "Matthew 5:16" },
+    { t: "Many are the plans in a person's heart, but it is the Lord's purpose that prevails.", r: "Proverbs 19:21" },
+    { t: "Let us run with perseverance the race that is set before us.", r: "Hebrews 12:1" },
+    { t: "I have set the Lord always before me. Because he is at my right hand, I shall not be moved.", r: "Psalm 16:8" },
+    { t: "In all hard work there is profit, but the talk of the lips leads only to poverty.", r: "Proverbs 14:23" },
+    { t: "For we walk by faith, not by sight.", r: "2 Corinthians 5:7" },
+    { t: "His compassions never fail. They are new every morning; great is your faithfulness.", r: "Lamentations 3:22–23" },
+    { t: "A generous person will prosper; whoever refreshes others will be refreshed.", r: "Proverbs 11:25" },
+    { t: "For we are his workmanship, created in Christ Jesus for good works, which God prepared beforehand.", r: "Ephesians 2:10" },
+    { t: "The Lord is my strength and my shield. My heart trusted in him, and I am helped.", r: "Psalm 28:7" },
+    { t: "For though a righteous man falls seven times, he rises up again.", r: "Proverbs 24:16" },
+    { t: "You will keep him in perfect peace whose mind is steadfast, because he trusts in you.", r: "Isaiah 26:3" },
+    { t: "Ask, and it will be given to you. Seek, and you will find. Knock, and it will be opened for you.", r: "Matthew 7:7" },
+    { t: "Plans fail for lack of counsel, but with many advisers they succeed.", r: "Proverbs 15:22" },
+    { t: "Remember the Lord your God, for it is he who gives you power to get wealth.", r: "Deuteronomy 8:18" },
+    { t: "I am the vine. You are the branches. Apart from me you can do nothing.", r: "John 15:5" },
+    { t: "Cast your burden on the Lord, and he will sustain you. He will never allow the righteous to be moved.", r: "Psalm 55:22" },
+    { t: "Now faith is the assurance of things hoped for, proof of things not seen.", r: "Hebrews 11:1" },
+    { t: "Rejoice always. Pray without ceasing. In everything give thanks.", r: "1 Thessalonians 5:16–18" },
+    { t: "Be strong, and let your heart take courage, all you who hope in the Lord.", r: "Psalm 31:24" },
+    { t: "Set your mind on the things that are above, not on the things that are on the earth.", r: "Colossians 3:2" }
+  ];
+  function renderVerse() {
+    var now = new Date();
+    var start = new Date(now.getFullYear(), 0, 0);
+    var dayOfYear = Math.floor((now - start) / 86400000);
+    var v = VERSES[dayOfYear % VERSES.length];
+    document.getElementById("verseText").textContent = "“" + v.t + "”";
+    document.getElementById("verseRef").textContent = v.r;
+    document.getElementById("verse").style.display = "";
+  }
+
+  // ----- auto "repeat tomorrow": which habit most lifts your best days -----
+  function renderRepeat() {
+    var el = document.getElementById("repeatInsight");
+    if (!el) return;
+    var days = Object.keys(all)
+      .filter(function (k) { return /^\d{4}-\d{2}-\d{2}$/.test(k); })
+      .map(function (k) { return { d: all[k], s: scoreDay(all[k]).overall }; })
+      .filter(function (x) { return x.s > 0; });
+
+    if (days.length < 3) {
+      el.innerHTML = '<span class="empty-tip">Log a few more days and I\'ll spot the habit that drives your best days — and tell you to repeat it.</span>';
+      return;
+    }
+    var HABITS = [
+      { k: "body.trained", verb: "train" },
+      { k: "work.revenue", verb: "take a revenue-moving action" },
+      { k: "spirit.prayer", verb: "pray" },
+      { k: "spirit.scripture", verb: "spend time in the Word" },
+      { k: "work.deep", verb: "do a deep-work block" },
+      { k: "body.water", verb: "stay hydrated" },
+      { k: "__sleep", verb: "sleep 7+ hours" },
+      { k: "__clean", verb: "eat clean" }
+    ];
+    function present(day, h) {
+      if (h.k === "__sleep") { var s = get(day, "body.sleep"); return typeof s === "number" ? s >= 7 : null; }
+      if (h.k === "__clean") { var n = get(day, "body.nutrition"); return (typeof n === "number" && n > 0) ? n >= 4 : null; }
+      var v = get(day, h.k); return v === true ? true : (v === false || v == null ? false : true);
+    }
+    var best = null;
+    HABITS.forEach(function (h) {
+      var on = [], off = [];
+      days.forEach(function (x) {
+        var p = present(x.d, h);
+        if (p === true) on.push(x.s); else if (p === false) off.push(x.s);
+      });
+      if (on.length >= 2 && off.length >= 1) {
+        var avg = function (a) { return a.reduce(function (m, n) { return m + n; }, 0) / a.length; };
+        var delta = avg(on) - avg(off);
+        if (!best || delta > best.delta) best = { verb: h.verb, delta: delta, on: Math.round(avg(on)), off: Math.round(avg(off)) };
+      }
+    });
+    if (!best || best.delta < 3) {
+      el.innerHTML = '<span class="empty-tip">Your habits look steady right now. Keep stacking good days — the moment one clearly lifts your scores, I\'ll flag it here.</span>';
+      return;
+    }
+    var verb = best.verb.charAt(0).toUpperCase() + best.verb.slice(1);
+    el.innerHTML =
+      '<div class="head">🔁 <b>' + verb + '</b> again tomorrow.</div>' +
+      '<span class="empty-tip">Days you do average <b class="up">' + best.on + '</b> vs <b>' + best.off + '</b> without it — your single biggest driver.</span>';
+  }
+
   // ----- init -----
   buildScales();
   bindInputs();
   loadDayIntoForm();
+  renderVerse();
   paint();
 
   // ----- API for the optional cloud-sync layer (see the module script below) -----
