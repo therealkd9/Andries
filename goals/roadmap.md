@@ -8,7 +8,7 @@ feel real.
 
 The long-term thing you're moving toward. One sentence. It can evolve.
 
-> _In a year, Andries is ________________._
+> _In a year, Andries is making $25k/month._
 
 ## Next 90 days
 
@@ -17,15 +17,15 @@ whether you hit it.
 
 | # | Outcome | Measure of done | Target date |
 |---|---|---|---|
-| 1 |  |  |  |
-| 2 |  |  |  |
-| 3 |  |  |  |
+| 1 |$8k-$10k/month|0  |September 30th  |
+| 2 |Foundation with God|0  |August 15th  |
+| 3 |Starting to pay Dad back|0  |September 30th  |
 
 ## This month
 
 The slice of the 90-day goals you're attacking right now.
 
--
+- Creating a business that profits $8k-$10k/month while getting closer with God
 
 ## Milestones (the trail behind)
 
