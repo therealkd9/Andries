@@ -1,6 +1,6 @@
 // Service worker: installable + offline, but always prefers fresh content
 // so updates show up without getting stuck on an old cached version.
-const CACHE = "andries-checkin-v4";
+const CACHE = "andries-checkin-v5";
 const ASSETS = [
   "./",
   "./index.html",

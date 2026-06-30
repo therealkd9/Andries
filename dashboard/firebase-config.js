@@ -1,16 +1,14 @@
 // Andries — Firebase sync config.
 //
-// Paste the config object from your Firebase project here (Project settings →
-// "Your apps" → the web app → "SDK setup and configuration" → Config).
-//
 // These values are NOT secret — Firebase web config is meant to be public.
 // Your check-ins are protected by Google sign-in + Firestore security rules
-// (each person can only read/write their own data). Until you paste a real
-// apiKey below, the app simply runs local-only with no sync.
+// (each person can only read/write their own data).
 
 export const firebaseConfig = {
-  apiKey: "PASTE_YOUR_API_KEY",
-  authDomain: "PASTE_PROJECT_ID.firebaseapp.com",
-  projectId: "PASTE_PROJECT_ID",
-  appId: "PASTE_APP_ID"
+  apiKey: "AIzaSyAhbNgmsVNhxIP-1kwkWtfCglZcCYA-oFI",
+  authDomain: "andries-20203.firebaseapp.com",
+  projectId: "andries-20203",
+  storageBucket: "andries-20203.firebasestorage.app",
+  messagingSenderId: "305485708035",
+  appId: "1:305485708035:web:236cc8376aa720c55fc736"
 };
