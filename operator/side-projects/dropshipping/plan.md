@@ -1,6 +1,7 @@
 # Dropshipping Store — Launch Plan
 
-**Status:** Setup / pre-launch
+**Status:** Building. Niche chosen: **pet anxiety relief**. Brand: **CalmPaws**.
+Hero product: calming donut/cloud dog bed (supplier sourcing handled by Andries).
 **Role in the business:** Side gig. B2B AI automation stays Engine #1. This is the
 "build once, feed daily" consistency play. Bias to simple and fast to launch, then
 win on consistency.
@@ -52,14 +53,16 @@ order product samples, approve product + store, handle the supplier/orders.
 
 ## Launch checklist
 
-- [ ] 1. Pick the product (research in progress) ← 80% of success
-- [ ] 2. Validate supplier (AliExpress / CJ Dropshipping / Zendrop) + margin check
-- [ ] 3. Build Shopify store (Claude writes copy + structure; Andries sets up account)
-- [ ] 4. Create 3 to 5 TikTok + IG accounts, warm them up
-- [ ] 5. Write first batch of 30 video scripts/hooks (Claude)
-- [ ] 6. Render first batch in Creatify (Andries)
-- [ ] 7. Post 2 to 4 per account per day, track what hits
-- [ ] 8. Double down on winning hooks, kill the rest
+- [x] 1. Pick the niche/product → pet anxiety relief, CalmPaws, calming bed hero
+- [x] 2. Brand identity (`brand.md`)
+- [x] 3. Store copy written (`store-copy.md`) — Andries sets up Shopify account
+- [x] 4. 30 video scripts written (`video-scripts.md`)
+- [x] 5. Content calendar + posting system (`content-calendar.md`)
+- [ ] 6. Andries: make 1 TikTok + 1 IG account (CalmPaws)
+- [ ] 7. Andries: set up Shopify ($1 trial) + paste in the copy
+- [ ] 8. Andries: start Creatify free trial, render first batch
+- [ ] 9. Post 1 to 2/day, track what hits
+- [ ] 10. Scale accounts + remix winners (Phase 2)
 
 ## Costs to start (kept minimal)
 
