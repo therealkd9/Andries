@@ -1,0 +1,52 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Andries//Daily Check-In Reminders//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Andries Check-In Reminders
+BEGIN:VEVENT
+UID:andries-checkin-midday@andries.app
+DTSTAMP:20260630T120000Z
+DTSTART:20260630T130000
+DURATION:PT10M
+RRULE:FREQ=DAILY
+TRANSP:TRANSPARENT
+SUMMARY:📋 Andries Check-In — midday nudge
+DESCRIPTION:Quick pulse check. Open it: https://therealkd9.github.io/Andries/dashboard/
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Andries Check-In
+TRIGGER:-PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:andries-checkin-evening@andries.app
+DTSTAMP:20260630T120000Z
+DTSTART:20260630T180000
+DURATION:PT10M
+RRULE:FREQ=DAILY
+TRANSP:TRANSPARENT
+SUMMARY:📋 Andries Check-In — evening
+DESCRIPTION:How did today go? Open it: https://therealkd9.github.io/Andries/dashboard/
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Andries Check-In
+TRIGGER:-PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:andries-checkin-night@andries.app
+DTSTAMP:20260630T120000Z
+DTSTART:20260630T210000
+DURATION:PT10M
+RRULE:FREQ=DAILY
+TRANSP:TRANSPARENT
+SUMMARY:📋 Andries Check-In — fill it out before bed
+DESCRIPTION:Last call — log Body, Mind, Spirit, Work, and why it worked: https://therealkd9.github.io/Andries/dashboard/
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Andries Check-In
+TRIGGER:-PT0M
+END:VALARM
+END:VEVENT
+END:VCALENDAR
