@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Live Demo · Andries</title>
+<style>
+  :root { --bg:#0c0e14; --frame:#1b1f2e; --gray:#26303f; --blue:#2f6df6; --text:#fff; --muted:#9aa3b8; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:radial-gradient(900px 500px at 50% -10%,#161a2b,var(--bg) 60%); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:26px 16px 40px; }
+  .lead { text-align:center; max-width:520px; margin-bottom:18px; }
+  .lead h1 { font-size:20px; font-weight:700; }
+  .lead h1 b { color:#6c8cff; }
+  .lead p { color:var(--muted); font-size:14px; margin-top:6px; line-height:1.5; }
+
+  .phone { width:330px; max-width:94vw; background:var(--frame); border:1px solid #2c3346; border-radius:34px;
+    padding:12px 10px 16px; box-shadow:0 30px 80px rgba(0,0,0,.55); }
+  .notch { width:120px; height:24px; background:#0c0e14; border-radius:0 0 16px 16px; margin:0 auto 8px; }
+  .contact { text-align:center; padding:6px 0 12px; border-bottom:1px solid #2c3346; margin-bottom:10px; }
+  .avatar { width:48px; height:48px; border-radius:50%; margin:0 auto 6px; display:flex; align-items:center;
+    justify-content:center; font-weight:700; font-size:18px; background:linear-gradient(135deg,#4ade80,#2f6df6); color:#fff; }
+  .contact .nm { font-size:15px; font-weight:600; }
+  .contact .sub { font-size:11px; color:var(--muted); margin-top:2px; }
+
+  .thread { min-height:430px; display:flex; flex-direction:column; gap:9px; padding:6px 6px 4px; }
+  .sys { align-self:center; font-size:11px; color:var(--muted); background:#141826; padding:5px 12px; border-radius:999px; }
+  .row { display:flex; max-width:82%; opacity:0; transform:translateY(8px); animation:pop .35s ease forwards; }
+  .row.them { align-self:flex-start; }
+  .row.me { align-self:flex-end; }
+  .bub { padding:9px 13px; border-radius:18px; font-size:14px; line-height:1.4; }
+  .them .bub { background:var(--gray); border-bottom-left-radius:5px; }
+  .me .bub { background:var(--blue); border-bottom-right-radius:5px; }
+  @keyframes pop { to { opacity:1; transform:none; } }
+
+  .typing { align-self:flex-start; background:var(--gray); border-radius:18px; border-bottom-left-radius:5px;
+    padding:11px 14px; display:none; }
+  .typing.show { display:flex; gap:4px; }
+  .typing span { width:7px; height:7px; background:#9aa3b8; border-radius:50%; animation:blink 1.2s infinite; }
+  .typing span:nth-child(2){ animation-delay:.2s; } .typing span:nth-child(3){ animation-delay:.4s; }
+  @keyframes blink { 0%,60%,100%{opacity:.3} 30%{opacity:1} }
+
+  .cap { max-width:420px; text-align:center; margin-top:18px; color:var(--muted); font-size:13px; line-height:1.6; opacity:0; transition:opacity .6s; }
+  .cap.show { opacity:1; }
+  .cap b { color:#4ade80; }
+  .btnrow { margin-top:14px; display:flex; gap:10px; opacity:0; transition:opacity .6s; }
+  .btnrow.show { opacity:1; }
+  .btn { background:#1b1f2e; border:1px solid #2c3346; color:#fff; border-radius:10px; padding:9px 16px; font-size:13px; cursor:pointer; }
+  .btn.primary { background:#2f6df6; border-color:#2f6df6; }
+</style>
+</head>
+<body>
+  <div class="lead">
+    <h1>What your customers get when <b id="leadName">your business</b> can't pick up</h1>
+    <p>A real missed call → answered, qualified, and booked. Automatically. No one at the shop touched a thing.</p>
+  </div>
+
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="contact">
+      <div class="avatar" id="avatar">B</div>
+      <div class="nm" id="contactName">Your Business</div>
+      <div class="sub">Text Message · Today</div>
+    </div>
+    <div class="thread" id="thread">
+      <div class="typing" id="typing"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+
+  <div class="cap" id="cap"></div>
+  <div class="btnrow" id="btnrow"><button class="btn primary" id="replay">▶ Replay</button></div>
+
+<script>
+(function(){
+  var params = new URLSearchParams(location.search);
+  var name = params.get("name") || "Your Business";
+  var type = (params.get("type") || "generic").toLowerCase();
+
+  var SCRIPTS = {
+    hvac:    { problem:"My AC just quit and the house is already 85°", q:"Oh no — let's get you cool fast. What's the address and a good callback number?", book:"We can have a tech out today between 4–6 PM. Want me to lock it in?" },
+    plumbing:{ problem:"Water's leaking under my kitchen sink, kind of a mess", q:"Let's stop that leak. What's the address and best callback number?", book:"I can get a plumber there today between 3–5 PM. Want me to book it?" },
+    roofing: { problem:"Think I've got a roof leak after last night's storm", q:"Let's get that looked at before it spreads. Address and best number to reach you?", book:"We can do a free inspection tomorrow morning. Want me to set it up?" },
+    electrical:{ problem:"Half my outlets just went dead", q:"Let's get the power sorted safely. What's the address and a good callback number?", book:"An electrician can come today between 2–4 PM. Want me to lock it in?" },
+    landscaping:{ problem:"Need a quote to get my yard back under control", q:"Happy to help. What's the address and best number for the estimate?", book:"We can swing by for a free quote Thursday. Want me to schedule it?" },
+    garage:  { problem:"My garage door won't open and my car's stuck inside", q:"Let's get you back in. What's the address and a good callback number?", book:"A tech can be out today between 1–3 PM. Want me to book it?" },
+    pest:    { problem:"Seeing roaches in the kitchen, need someone soon", q:"Let's take care of that fast. What's the address and best callback number?", book:"We can treat it tomorrow morning. Want me to set it up?" },
+    generic: { problem:"Hi, I need some help and tried calling", q:"Happy to help! What's going on, and what's a good callback number?", book:"We can get someone out to you soon. Want me to book a time?" }
+  };
+  var s = SCRIPTS[type] || SCRIPTS.generic;
+  var initials = name.replace(/[^A-Za-z ]/g,"").trim().split(/\s+/).map(function(w){return w[0];}).join("").slice(0,2).toUpperCase() || "B";
+
+  document.getElementById("leadName").textContent = name;
+  document.getElementById("contactName").textContent = name;
+  document.getElementById("avatar").textContent = initials;
+  document.title = "Live Demo · " + name;
+
+  var steps = [
+    { sys:"📞 Missed call from a new customer — 2:14 PM" },
+    { who:"them", text:"Hi! This is "+name+" 👋 Sorry we missed your call — we're out on a job right now. How can we help? (We didn't want you waiting.)" },
+    { who:"me",  text:s.problem },
+    { who:"them", text:s.q },
+    { who:"me",  text:"123 Oak St — 337-555-0148" },
+    { who:"them", text:s.book },
+    { who:"me",  text:"Yes please!" },
+    { who:"them", text:"✅ You're all set! You'll get a text when your tech is on the way. Thanks for choosing "+name+"!" }
+  ];
+
+  var thread = document.getElementById("thread");
+  var typing = document.getElementById("typing");
+
+  function addRow(step){
+    if (step.sys){ var d=document.createElement("div"); d.className="sys"; d.textContent=step.sys; thread.insertBefore(d, typing); return; }
+    var row=document.createElement("div"); row.className="row "+step.who;
+    var b=document.createElement("div"); b.className="bub"; b.textContent=step.text;
+    row.appendChild(b); thread.insertBefore(row, typing);
+  }
+
+  var t=[];
+  function clearAll(){ t.forEach(clearTimeout); t=[];
+    Array.prototype.slice.call(thread.querySelectorAll(".row,.sys")).forEach(function(n){n.remove();});
+    typing.classList.remove("show");
+    document.getElementById("cap").classList.remove("show");
+    document.getElementById("btnrow").classList.remove("show");
+  }
+
+  function run(){
+    clearAll();
+    var delay=400;
+    steps.forEach(function(step,i){
+      if (step.who==="them"){
+        t.push(setTimeout(function(){ typing.classList.add("show"); }, delay));
+        delay += 900;
+        t.push(setTimeout(function(){ typing.classList.remove("show"); addRow(step); }, delay));
+        delay += 500;
+      } else {
+        t.push(setTimeout(function(){ addRow(step); }, delay));
+        delay += 700;
+      }
+    });
+    t.push(setTimeout(function(){
+      var cap=document.getElementById("cap");
+      cap.innerHTML = 'That entire conversation ran <b>automatically</b> — answered in seconds, qualified, and booked, while the crew stayed on the job. <br>Built for <b>'+name+'</b> by Andries.';
+      cap.classList.add("show");
+      document.getElementById("btnrow").classList.add("show");
+      window.__demoDone = true;
+    }, delay+300));
+  }
+
+  document.getElementById("replay").addEventListener("click", run);
+  run();
+})();
+</script>
+</body>
+</html>

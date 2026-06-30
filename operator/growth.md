@@ -50,6 +50,14 @@ The reminder app already nudges you. This is what you do when it does.
 ## Memory / Daily log
 Newest at top. Each entry: date · what happened · what we improved · next rung.
 
+### 2026-06-30 — Day 1 (cont.)
+- **✨ New capability:** built a **personalized demo page** (`demo/`) — a phone
+  mockup showing each prospect's own business auto-answering and booking a customer.
+  Per-prospect link via `?name=&type=`. This becomes the hook for all outreach.
+- **Insight (Andries):** cold messages only work with something visual they can SEE.
+  Demo-led outreach is now the PRIMARY approach (see outreach-templates.md).
+- **Next rung:** #3 — personalize demos + messages for the top 3 leads and send.
+
 ### 2026-06-30 — Day 1
 - **✅ Rung #2 done:** the Operator researched **12 real home-service leads** in
   Lafayette, LA (all trades), with phones, sites, and a specific pain hook each.

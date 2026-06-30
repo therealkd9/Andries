@@ -8,6 +8,40 @@ The `{curly}` bits get filled per lead by the Operator.
 
 ---
 
+## ⭐ Demo-led outreach (PRIMARY approach)
+
+A plain cold message gets ignored. Lead with a **personalized live demo** instead —
+a phone-mockup page showing THEIR business auto-answering and booking a customer.
+It's a gift they want to open, not a pitch.
+
+**Build the link per prospect** (hosted on Pages):
+```
+https://therealkd9.github.io/Andries/demo/?name={Business Name}&type={trade}
+```
+`type` = hvac · plumbing · roofing · electrical · landscaping · garage · pest
+(URL-encode the name: spaces → %20, & → %26, / → %2F)
+
+**The message (text / DM / email):**
+```
+Hey {ownerName} — I built you a 30-second demo of what your customers get when
+they call {business} and you're tied up on a job 👉 {demoLink}
+
+The whole conversation — answered, qualified, booked — happens automatically, so
+you stop losing jobs to whoever picks up first. Want me to set it up for {business}?
+```
+
+**Follow-up (2–3 days):**
+```
+Did you get a chance to watch the demo? Quick math: a few missed calls a week at
+$300–$3,000 a job adds up fast. Happy to tailor it exactly to {business} — worth a
+10-min call?
+```
+
+Goal of the demo link: a reply / a booked call. Everything below is backup for when
+a demo isn't a fit.
+
+---
+
 ## Cold Email
 
 **Subject lines (test a few):**
