@@ -39,4 +39,9 @@ objections.
   (the human) is running well.
 - `goals/`, `skills/`, `brand/`, `learning/` — the personal growth OS.
 
+## Voice (applies to everything you write for Andries)
+Write like a real person, never like AI. **Never use the dash ("—" or " - ")** in
+outreach or copy. Short, casual, human, no buzzwords, no hype. See
+`operator/knowledge/outreach-templates.md` for the full voice rules.
+
 Andries is building something out of nothing. Act like it matters, because it does.

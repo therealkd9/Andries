@@ -41,7 +41,12 @@
   .typing span:nth-child(2){ animation-delay:.2s; } .typing span:nth-child(3){ animation-delay:.4s; }
   @keyframes blink { 0%,60%,100%{opacity:.3} 30%{opacity:1} }
 
-  .cap { max-width:420px; text-align:center; margin-top:18px; color:var(--muted); font-size:13px; line-height:1.6; opacity:0; transition:opacity .6s; }
+  .money { max-width:440px; text-align:center; margin-top:18px; background:linear-gradient(180deg,#10241a,#0e1a14);
+    border:1px solid #1f5138; border-radius:14px; padding:14px 18px; color:#cdebd9; font-size:14px; line-height:1.55;
+    opacity:0; transition:opacity .6s; }
+  .money.show { opacity:1; }
+  .money b { color:#4ade80; }
+  .cap { max-width:420px; text-align:center; margin-top:14px; color:var(--muted); font-size:13px; line-height:1.6; opacity:0; transition:opacity .6s; }
   .cap.show { opacity:1; }
   .cap b { color:#4ade80; }
   .btnrow { margin-top:14px; display:flex; gap:10px; opacity:0; transition:opacity .6s; }
@@ -68,6 +73,7 @@
     </div>
   </div>
 
+  <div class="money" id="money"></div>
   <div class="cap" id="cap"></div>
   <div class="btnrow" id="btnrow"><button class="btn primary" id="replay">▶ Replay</button></div>
 
@@ -78,16 +84,27 @@
   var type = (params.get("type") || "generic").toLowerCase();
 
   var SCRIPTS = {
-    hvac:    { problem:"My AC just quit and the house is already 85°", q:"Oh no — let's get you cool fast. What's the address and a good callback number?", book:"We can have a tech out today between 4–6 PM. Want me to lock it in?" },
-    plumbing:{ problem:"Water's leaking under my kitchen sink, kind of a mess", q:"Let's stop that leak. What's the address and best callback number?", book:"I can get a plumber there today between 3–5 PM. Want me to book it?" },
-    roofing: { problem:"Think I've got a roof leak after last night's storm", q:"Let's get that looked at before it spreads. Address and best number to reach you?", book:"We can do a free inspection tomorrow morning. Want me to set it up?" },
-    electrical:{ problem:"Half my outlets just went dead", q:"Let's get the power sorted safely. What's the address and a good callback number?", book:"An electrician can come today between 2–4 PM. Want me to lock it in?" },
-    landscaping:{ problem:"Need a quote to get my yard back under control", q:"Happy to help. What's the address and best number for the estimate?", book:"We can swing by for a free quote Thursday. Want me to schedule it?" },
-    garage:  { problem:"My garage door won't open and my car's stuck inside", q:"Let's get you back in. What's the address and a good callback number?", book:"A tech can be out today between 1–3 PM. Want me to book it?" },
-    pest:    { problem:"Seeing roaches in the kitchen, need someone soon", q:"Let's take care of that fast. What's the address and best callback number?", book:"We can treat it tomorrow morning. Want me to set it up?" },
-    generic: { problem:"Hi, I need some help and tried calling", q:"Happy to help! What's going on, and what's a good callback number?", book:"We can get someone out to you soon. Want me to book a time?" }
+    hvac:      { problem:["ac just quit on me","house is already 85 in here 🥵"], reply:["Oh no, in this heat? Let's get you cooled down quick.","What's the address and a good number to reach you?"], book:"We've got someone who can be out today between 4 and 6. Want me to lock it in?" },
+    plumbing:  { problem:["got water leaking under my kitchen sink","kinda a mess honestly"], reply:["Yikes, let's get that stopped before it spreads.","What's the address and best number to reach you?"], book:"I can have a plumber out there today between 3 and 5. Want me to book it?" },
+    roofing:   { problem:["think i've got a roof leak","started after that storm last night"], reply:["Let's get eyes on it before it gets worse.","What's the address and a good number for you?"], book:"We can do a free inspection tomorrow morning. Want me to set it up?" },
+    electrical:{ problem:["half my outlets just went dead","not sure what happened"], reply:["Let's get that sorted out safely.","What's the address and a good callback number?"], book:"An electrician can swing by today between 2 and 4. Want me to lock it in?" },
+    landscaping:{ problem:["need a quote for my yard","it's gotten kinda out of control lol"], reply:["Ha, we got you. Happy to come take a look.","What's the address and best number for the estimate?"], book:"We can come by Thursday for a free quote. Want me to schedule it?" },
+    garage:    { problem:["my garage door won't open","and my car's stuck inside 😩"], reply:["Let's get you back in.","What's the address and a good number to reach you?"], book:"A tech can be out today between 1 and 3. Want me to book it?" },
+    pest:      { problem:["seeing roaches in the kitchen","need someone out soon"], reply:["Gross, let's take care of that fast.","What's the address and best callback number?"], book:"We can treat it first thing tomorrow. Want me to set it up?" },
+    generic:   { problem:["hey, tried calling","need some help"], reply:["Happy to help!","What's going on, and what's a good number to reach you?"], book:"We can get someone out to you soon. Want me to book a time?" }
+  };
+  var MONEY = {
+    hvac:"📈 One missed call can be a <b>$350 to $600</b> service job, and a few thousand on an install. Catch even a handful a week and that's <b>$4,000+ a month</b> you're leaving on the table right now.",
+    plumbing:"📈 One missed call can be a <b>$250 to $700</b> job. Catch even a few a week and that's <b>$3,500+ a month</b> walking out the door right now.",
+    roofing:"📈 One missed roofing lead can be an <b>$8,000+</b> job. Catching even one or two extra a month is <b>tens of thousands</b> you're not capturing right now.",
+    electrical:"📈 One missed call can be a <b>$200 to $800</b> job. Catch even a few a week and that's <b>$3,000+ a month</b> you're leaving on the table.",
+    landscaping:"📈 One missed quote can be a <b>$150 to $500</b> job, plus the recurring work behind it. That's easily <b>$2,500+ a month</b> slipping away.",
+    garage:"📈 One missed call can be a <b>$200 to $600</b> job. Catch even a few a week and that's <b>$2,500+ a month</b> you're not capturing right now.",
+    pest:"📈 One missed call can be a <b>$150 to $400</b> job, plus a recurring plan. That's <b>$2,500+ a month</b> in work walking away.",
+    generic:"📈 One missed call can be a <b>$200 to $800</b> job. Catch even a few a week and that's <b>$3,000+ a month</b> you're leaving on the table right now."
   };
   var s = SCRIPTS[type] || SCRIPTS.generic;
+  var money = MONEY[type] || MONEY.generic;
   var initials = name.replace(/[^A-Za-z ]/g,"").trim().split(/\s+/).map(function(w){return w[0];}).join("").slice(0,2).toUpperCase() || "B";
 
   document.getElementById("leadName").textContent = name;
@@ -96,15 +113,17 @@
   document.title = "Live Demo · " + name;
 
   var steps = [
-    { sys:"📞 Missed call from a new customer — 2:14 PM" },
-    { who:"them", text:"Hi! This is "+name+" 👋 Sorry we missed your call — we're out on a job right now. How can we help? (We didn't want you waiting.)" },
-    { who:"me",  text:s.problem },
-    { who:"them", text:s.q },
-    { who:"me",  text:"123 Oak St — 337-555-0148" },
-    { who:"them", text:s.book },
-    { who:"me",  text:"Yes please!" },
-    { who:"them", text:"✅ You're all set! You'll get a text when your tech is on the way. Thanks for choosing "+name+"!" }
+    { sys:"📞 Missed call from a new customer · 2:14 PM" },
+    { who:"them", text:"Hey! This is "+name+" 👋" },
+    { who:"them", text:"So sorry we missed your call, we're out on a job right now. What's going on?" }
   ];
+  s.problem.forEach(function(t){ steps.push({ who:"me", text:t }); });
+  s.reply.forEach(function(t){ steps.push({ who:"them", text:t }); });
+  steps.push({ who:"me",   text:"123 oak st" });
+  steps.push({ who:"me",   text:"337 555 0148" });
+  steps.push({ who:"them", text:s.book });
+  steps.push({ who:"me",   text:"yes please 🙏" });
+  steps.push({ who:"them", text:"You're all set! 🎉 We'll send a confirmation and let you know when we're headed your way. Thanks for going with "+name+"." });
 
   var thread = document.getElementById("thread");
   var typing = document.getElementById("typing");
@@ -120,6 +139,7 @@
   function clearAll(){ t.forEach(clearTimeout); t=[];
     Array.prototype.slice.call(thread.querySelectorAll(".row,.sys")).forEach(function(n){n.remove();});
     typing.classList.remove("show");
+    document.getElementById("money").classList.remove("show");
     document.getElementById("cap").classList.remove("show");
     document.getElementById("btnrow").classList.remove("show");
   }
@@ -139,8 +159,10 @@
       }
     });
     t.push(setTimeout(function(){
+      var mn=document.getElementById("money");
+      mn.innerHTML = money; mn.classList.add("show");
       var cap=document.getElementById("cap");
-      cap.innerHTML = 'That entire conversation ran <b>automatically</b> — answered in seconds, qualified, and booked, while the crew stayed on the job. <br>Built for <b>'+name+'</b> by Andries.';
+      cap.innerHTML = 'Every bit of that happened <b>automatically</b>. Answered in seconds, qualified, and booked, while the crew stayed on the job. <br>Built for <b>'+name+'</b> by Andries.';
       cap.classList.add("show");
       document.getElementById("btnrow").classList.add("show");
       window.__demoDone = true;

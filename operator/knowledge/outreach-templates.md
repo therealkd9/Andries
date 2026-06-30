@@ -6,6 +6,16 @@ text. Always make the value concrete (lost jobs, saved hours, booked appointment
 
 The `{curly}` bits get filled per lead by the Operator.
 
+## Voice rules (NON-NEGOTIABLE)
+- **Never use the dash ("—" or " - ") in any message.** It's a dead AI giveaway.
+  Use periods, commas, or just two short sentences instead.
+- **Write like a real person texting**, not a marketer. Short. Casual. Contractions.
+  Lowercase is fine. A little imperfect. One thought per line.
+- No corporate buzzwords, no "I hope this email finds you well," no hype, no emojis
+  spammed everywhere (one is plenty).
+- Read it out loud. If it sounds like a human friend, it's right. If it sounds like
+  ChatGPT, rewrite it.
+
 ---
 
 ## ⭐ Demo-led outreach (PRIMARY approach)
