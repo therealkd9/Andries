@@ -22,7 +22,7 @@ Update the level as each rung graduates. Goal: push everything rightward over we
 | # | Step | Now | Target | Notes |
 |---|---|---|---|---|
 | 1 | Pick targets (niche + criteria) | 🟢 | 🟢 | ✅ DONE: home services, cold |
-| 2 | Find & research leads | 🔴 | 🟢 | First skill to build |
+| 2 | Find & research leads | 🟢 | 🟢 | ✅ Did 12 real Lafayette leads on its own |
 | 3 | Write outreach | 🔴 | 🟢 | Templates exist; personalize per lead |
 | 4 | Send outreach | 🔴 | 🟡→🟢 | Needs "hands" (PC) to send at scale |
 | 5 | Follow up on schedule | 🔴 | 🟢 |  |
@@ -49,6 +49,15 @@ The reminder app already nudges you. This is what you do when it does.
 
 ## Memory / Daily log
 Newest at top. Each entry: date · what happened · what we improved · next rung.
+
+### 2026-06-30 — Day 1
+- **✅ Rung #2 done:** the Operator researched **12 real home-service leads** in
+  Lafayette, LA (all trades), with phones, sites, and a specific pain hook each.
+  Saved to `pipeline.md`. Strongest: Fontenot's A/C, Legacy AC, King Electrical.
+- **Learned:** exact Google review counts often hidden behind aggregators; a quick
+  ~2pm test-call pass is the best way to capture the "went to voicemail" hook.
+- **Next rung:** #3 — write the first personalized outreach messages for the top
+  leads (channel decision: phone vs. email vs. FB DM).
 
 ### 2026-06-30 — Day 0
 - **Built:** the Operator's brain (charter, offer draft, ICP, templates, objections,
