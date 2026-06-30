@@ -50,6 +50,14 @@ The reminder app already nudges you. This is what you do when it does.
 ## Memory / Daily log
 Newest at top. Each entry: date · what happened · what we improved · next rung.
 
+### 2026-06-30 — Day 2 prep
+- **✅ Rung #3 essentially done:** finalized the outreach style with Andries — a
+  "lost customer" hook (reads like a missed lead) + fast honest reveal + demo link,
+  proper capitalization, hook-and-link first. Saved as the primary email template.
+- **Found Fontenot's email:** sales@fontenotsac.com (format [first]@fontenotsac.com).
+  First full send package is ready (subject + body + email + demo link).
+- **Open:** clean domain (later), then actually send → rung #4.
+
 ### 2026-06-30 — Day 1 (cont.)
 - **✨ New capability:** built a **personalized demo page** (`demo/`) — a phone
   mockup showing each prospect's own business auto-answering and booking a customer.

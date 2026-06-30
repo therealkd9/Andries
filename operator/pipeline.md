@@ -17,7 +17,7 @@ session. If a lead isn't here, it doesn't exist.
 
 | Business | Trade | City | Owner | Contact | Pain hook | Stage | Last touch | Next action |
 |---|---|---|---|---|---|---|---|---|
-| Fontenot's A/C & Heating ⭐ | HVAC | Broussard | — | (337) 789-6070 · fontenotsac.com | Publicly promises 45-min response, no auto-reply → drops after-hours/overflow | Researched | — | Test-call ~2pm |
+| Fontenot's A/C & Heating ⭐ | HVAC | Broussard | — | sales@fontenotsac.com · (337) 789-6070 | Publicly promises 45-min response, no auto-reply → drops after-hours/overflow | Researched | — | Send demo email (template + email ready) |
 | Legacy Cooling & Heating ⭐ | HVAC | Lafayette | — | (337) 654-5767 · legacyac.us | Spending on FB ads = paying for leads they may be dropping | Researched | — | Test-call ~2pm |
 | King Electrical & Controls ⭐ | Electrical | Carencro | — | (337) 886-7111 | 3.7 Angi vs A+ BBB = textbook "never called back" gap | Researched | — | Test-call ~2pm |
 | Hibbard Roofing & Construction | Roofing | Lafayette | Baret Hibbard | (337) 366-0814 · Bhibbard@hibbardcontractors.com | Email/form-only intake; each missed form = $10k+ job | Researched | — | Email + test-call |
