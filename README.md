@@ -14,6 +14,7 @@ written down, broken into skills, and reviewed every week starts to compound.
 
 | Folder | What it's for |
 |---|---|
+| [`dashboard/`](dashboard/) | A reactive daily check-in — Body · Mind · Spirit · Work, plus *why it's working*. Open `dashboard/index.html` in your browser. |
 | [`brand/`](brand/) | Who Andries is becoming — identity, values, and how you show up. |
 | [`skills/`](skills/) | The skills you're building, tracked from *learning* → *fluent*. |
 | [`learning/`](learning/) | A running log of what you studied and what you took from it. |

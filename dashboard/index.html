@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Andries · Daily Check-In</title>
+<style>
+  :root {
+    --bg: #0c0e14;
+    --panel: #151823;
+    --panel-2: #1b1f2e;
+    --line: #262b3d;
+    --text: #e6e9f2;
+    --muted: #8b92a8;
+    --accent: #6c8cff;
+    --body: #4ade80;
+    --mind: #60a5fa;
+    --spirit: #c084fc;
+    --work: #fbbf24;
+    --good: #4ade80;
+    --warn: #fbbf24;
+    --bad: #f87171;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: radial-gradient(1200px 600px at 50% -10%, #161a2b 0%, var(--bg) 60%);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+    padding: 28px 18px 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+
+  /* Header */
+  header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; }
+  .brand h1 { font-size: 22px; letter-spacing: 0.5px; }
+  .brand h1 span { color: var(--accent); }
+  .brand p { color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .datebar { display: flex; align-items: center; gap: 10px; }
+  .datebar input {
+    background: var(--panel); border: 1px solid var(--line); color: var(--text);
+    border-radius: 10px; padding: 8px 12px; font-size: 14px; color-scheme: dark;
+  }
+  .pill { font-size: 12px; color: var(--muted); background: var(--panel); border: 1px solid var(--line); padding: 6px 12px; border-radius: 999px; }
+  .pill b { color: var(--accent); }
+
+  /* Top summary */
+  .summary { display: grid; grid-template-columns: 220px 1fr; gap: 18px; margin-bottom: 22px; }
+  @media (max-width: 720px) { .summary { grid-template-columns: 1fr; } }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
+  .score-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+  .ring-wrap { position: relative; width: 150px; height: 150px; }
+  .ring-num { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .ring-num .big { font-size: 38px; font-weight: 700; line-height: 1; }
+  .ring-num .lbl { font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
+  .score-card .streak { font-size: 13px; color: var(--muted); }
+  .score-card .streak b { color: var(--work); }
+
+  .pillars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  @media (max-width: 720px) { .pillars { grid-template-columns: repeat(2,1fr); } }
+  .pbar { background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+  .pbar .ph { display: flex; align-items: center; justify-content: space-between; font-size: 13px; }
+  .pbar .ph .v { font-weight: 700; }
+  .pbar .track { height: 8px; background: #0e1118; border-radius: 999px; margin-top: 10px; overflow: hidden; }
+  .pbar .fill { height: 100%; width: 0%; border-radius: 999px; transition: width .35s ease; }
+
+  /* Sections */
+  h2.section { font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin: 26px 4px 12px; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+  .cat-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .cat-head h3 { font-size: 16px; }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 0; border-top: 1px solid var(--line); }
+  .row:first-of-type { border-top: none; }
+  .row label { font-size: 14px; color: var(--text); }
+  .row .hint { display: block; font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* Toggle */
+  .toggle { position: relative; width: 46px; height: 26px; flex: none; }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle .sl { position: absolute; inset: 0; background: #2a3047; border-radius: 999px; transition: .2s; cursor: pointer; }
+  .toggle .sl:before { content: ""; position: absolute; width: 20px; height: 20px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: .2s; }
+  .toggle input:checked + .sl { background: var(--accent); }
+  .toggle input:checked + .sl:before { transform: translateX(20px); }
+
+  /* Scale (1-5) */
+  .scale { display: flex; gap: 6px; flex: none; }
+  .scale button {
+    width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--line);
+    background: var(--panel-2); color: var(--muted); font-size: 13px; cursor: pointer; transition: .15s;
+  }
+  .scale button:hover { border-color: var(--accent); }
+  .scale button.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* Number */
+  input.num { width: 78px; background: var(--panel-2); border: 1px solid var(--line); color: var(--text); border-radius: 8px; padding: 7px 10px; font-size: 14px; text-align: center; }
+
+  textarea {
+    width: 100%; background: var(--panel-2); border: 1px solid var(--line); color: var(--text);
+    border-radius: 10px; padding: 11px 12px; font-size: 14px; resize: vertical; min-height: 64px; font-family: inherit; margin-top: 6px;
+  }
+  textarea:focus, input:focus { outline: none; border-color: var(--accent); }
+  .field-lbl { font-size: 13px; color: var(--text); }
+  .field-lbl .hint { font-size: 11px; color: var(--muted); }
+
+  /* Why card highlight */
+  .why { border: 1px solid #2d3354; background: linear-gradient(180deg, #171b2e, var(--panel)); }
+  .why .badge { font-size: 11px; color: var(--accent); border: 1px solid #2d3354; padding: 3px 8px; border-radius: 999px; }
+
+  /* Trend */
+  .trend { display: flex; align-items: flex-end; gap: 8px; height: 96px; padding-top: 8px; }
+  .trend .b { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .trend .bar { width: 100%; max-width: 34px; background: var(--accent); border-radius: 6px 6px 2px 2px; transition: height .35s ease; min-height: 3px; }
+  .trend .day { font-size: 10px; color: var(--muted); }
+  .trend .val { font-size: 10px; color: var(--muted); }
+  .empty-tip { color: var(--muted); font-size: 13px; }
+
+  /* Footer actions */
+  .actions { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(12,14,20,.9); backdrop-filter: blur(8px); border-top: 1px solid var(--line); padding: 12px 18px; display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap; }
+  .actions .status { color: var(--muted); font-size: 12px; margin-right: auto; }
+  button.btn { background: var(--panel-2); color: var(--text); border: 1px solid var(--line); border-radius: 10px; padding: 9px 16px; font-size: 13px; cursor: pointer; transition: .15s; }
+  button.btn:hover { border-color: var(--accent); }
+  button.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  button.btn.danger:hover { border-color: var(--bad); color: var(--bad); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <h1><span>Andries</span> · Daily Check-In</h1>
+      <p>Body · Mind · Spirit · Work — and why it's working.</p>
+    </div>
+    <div class="datebar">
+      <span class="pill">🔥 Streak <b id="streak">0</b></span>
+      <input type="date" id="datePicker" />
+    </div>
+  </header>
+
+  <!-- SUMMARY -->
+  <div class="summary">
+    <div class="card score-card">
+      <div class="ring-wrap">
+        <svg width="150" height="150" viewBox="0 0 150 150">
+          <circle cx="75" cy="75" r="64" fill="none" stroke="#1f2334" stroke-width="13" />
+          <circle id="ring" cx="75" cy="75" r="64" fill="none" stroke="var(--accent)" stroke-width="13"
+            stroke-linecap="round" stroke-dasharray="402" stroke-dashoffset="402" transform="rotate(-90 75 75)" />
+        </svg>
+        <div class="ring-num">
+          <span class="big" id="scoreBig">0</span>
+          <span class="lbl">Today</span>
+        </div>
+      </div>
+      <div class="streak" id="scoreVerdict">Let's begin.</div>
+    </div>
+    <div class="card">
+      <div class="pillars">
+        <div class="pbar"><div class="ph"><span>💪 Body</span><span class="v" id="v-body">0</span></div><div class="track"><div class="fill" id="f-body" style="background:var(--body)"></div></div></div>
+        <div class="pbar"><div class="ph"><span>🧠 Mind</span><span class="v" id="v-mind">0</span></div><div class="track"><div class="fill" id="f-mind" style="background:var(--mind)"></div></div></div>
+        <div class="pbar"><div class="ph"><span>✝️ Spirit</span><span class="v" id="v-spirit">0</span></div><div class="track"><div class="fill" id="f-spirit" style="background:var(--spirit)"></div></div></div>
+        <div class="pbar"><div class="ph"><span>💵 Work</span><span class="v" id="v-work">0</span></div><div class="track"><div class="fill" id="f-work" style="background:var(--work)"></div></div></div>
+      </div>
+      <h2 class="section" style="margin:22px 0 10px;">Last 7 Days</h2>
+      <div class="trend" id="trend"><span class="empty-tip">Fill in a few days and your trend shows up here.</span></div>
+    </div>
+  </div>
+
+  <!-- CHECK-IN -->
+  <div class="grid">
+    <!-- BODY -->
+    <div class="card">
+      <div class="cat-head"><span class="dot" style="background:var(--body)"></span><h3>💪 Body</h3></div>
+      <div class="row"><div><label>Trained today</label><span class="hint">Lift, run, sport — moved with intent.</span></div><label class="toggle"><input type="checkbox" data-k="body.trained"><span class="sl"></span></label></div>
+      <div class="row"><div><label>Ate clean</label><span class="hint">Fueled the goal, not the craving.</span></div><div class="scale" data-k="body.nutrition"></div></div>
+      <div class="row"><div><label>Sleep (hours)</label><span class="hint">Last night.</span></div><input class="num" type="number" min="0" max="14" step="0.5" data-k="body.sleep"></div>
+      <div class="row"><div><label>Energy</label><span class="hint">Physical tank, 1–5.</span></div><div class="scale" data-k="body.energy"></div></div>
+      <div class="row"><div><label>Water on point</label></div><label class="toggle"><input type="checkbox" data-k="body.water"><span class="sl"></span></label></div>
+    </div>
+
+    <!-- MIND -->
+    <div class="card">
+      <div class="cat-head"><span class="dot" style="background:var(--mind)"></span><h3>🧠 Mind</h3></div>
+      <div class="row"><div><label>Mood</label><span class="hint">How you actually feel, 1–5.</span></div><div class="scale" data-k="mind.mood"></div></div>
+      <div class="row"><div><label>Calm (low stress)</label><span class="hint">5 = steady, 1 = frazzled.</span></div><div class="scale" data-k="mind.calm"></div></div>
+      <div class="row"><div><label>Focus</label><span class="hint">Could you go deep today?</span></div><div class="scale" data-k="mind.focus"></div></div>
+      <div class="field-lbl" style="margin-top:12px;">Grateful for <span class="hint">— one thing.</span></div>
+      <textarea data-k="mind.gratitude" placeholder="Today I'm grateful for…"></textarea>
+    </div>
+
+    <!-- SPIRIT -->
+    <div class="card">
+      <div class="cat-head"><span class="dot" style="background:var(--spirit)"></span><h3>✝️ Spirit</h3></div>
+      <div class="row"><div><label>Prayer</label><span class="hint">Talked with God.</span></div><label class="toggle"><input type="checkbox" data-k="spirit.prayer"><span class="sl"></span></label></div>
+      <div class="row"><div><label>Scripture / Word</label><span class="hint">Spent time in it.</span></div><label class="toggle"><input type="checkbox" data-k="spirit.scripture"><span class="sl"></span></label></div>
+      <div class="row"><div><label>Closeness</label><span class="hint">How close did you feel today, 1–5.</span></div><div class="scale" data-k="spirit.closeness"></div></div>
+      <div class="field-lbl" style="margin-top:12px;">Conviction / reflection</div>
+      <textarea data-k="spirit.note" placeholder="What is God putting on your heart?"></textarea>
+    </div>
+
+    <!-- WORK -->
+    <div class="card">
+      <div class="cat-head"><span class="dot" style="background:var(--work)"></span><h3>💵 Work</h3></div>
+      <div class="row"><div><label>Deep work block</label><span class="hint">Focused, building — not busywork.</span></div><label class="toggle"><input type="checkbox" data-k="work.deep"><span class="sl"></span></label></div>
+      <div class="row"><div><label>Revenue-moving action</label><span class="hint">Outreach, offer, delivery, a sale.</span></div><label class="toggle"><input type="checkbox" data-k="work.revenue"><span class="sl"></span></label></div>
+      <div class="row"><div><label>Momentum</label><span class="hint">Did the business move today, 1–5.</span></div><div class="scale" data-k="work.momentum"></div></div>
+      <div class="field-lbl" style="margin-top:12px;">Biggest win today</div>
+      <textarea data-k="work.win" placeholder="The one thing that mattered most…"></textarea>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <h2 class="section">Why it's working <span style="color:var(--accent)">— the part most people skip</span></h2>
+  <div class="grid">
+    <div class="card why">
+      <div class="cat-head" style="justify-content:space-between;"><h3>What worked</h3><span class="badge">causality</span></div>
+      <p class="empty-tip" style="margin-bottom:6px;">Name the specific thing that drove a good result. This is how you learn to repeat success on purpose.</p>
+      <textarea data-k="why.worked" placeholder="What specifically went right, and what caused it?"></textarea>
+    </div>
+    <div class="card why">
+      <div class="cat-head" style="justify-content:space-between;"><h3>Do again tomorrow</h3><span class="badge">repeatable</span></div>
+      <p class="empty-tip" style="margin-bottom:6px;">If you could only keep one habit from today, what is it?</p>
+      <textarea data-k="why.repeat" placeholder="The one move worth repeating…"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ACTIONS -->
+<div class="actions">
+  <span class="status" id="status">Auto-saving on.</span>
+  <button class="btn" id="exportBtn">⬇ Export JSON</button>
+  <button class="btn" id="importBtn">⬆ Import JSON</button>
+  <input type="file" id="importFile" accept="application/json" style="display:none" />
+  <button class="btn danger" id="clearBtn">Reset this day</button>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var KEY = "andries.checkin.v1";
+
+  // ----- 1-5 scale weights -----
+  var SCALE_FIELDS = new Set([
+    "body.nutrition","body.energy","mind.mood","mind.calm","mind.focus",
+    "spirit.closeness","work.momentum"
+  ]);
+
+  // ----- storage -----
+  function loadAll() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; }
+    catch (e) { return {}; }
+  }
+  function saveAll(all) { localStorage.setItem(KEY, JSON.stringify(all)); }
+
+  function todayStr() {
+    var d = new Date();
+    var off = d.getTimezoneOffset();
+    return new Date(d.getTime() - off * 60000).toISOString().slice(0, 10);
+  }
+
+  var all = loadAll();
+  var current = todayStr();
+
+  // ----- get/set nested value on a day object -----
+  function get(day, path) {
+    var p = path.split("."), o = day;
+    for (var i = 0; i < p.length; i++) { if (o == null) return undefined; o = o[p[i]]; }
+    return o;
+  }
+  function set(day, path, val) {
+    var p = path.split("."), o = day;
+    for (var i = 0; i < p.length - 1; i++) { if (o[p[i]] == null) o[p[i]] = {}; o = o[p[i]]; }
+    o[p[p.length - 1]] = val;
+  }
+
+  // ----- scoring (each pillar 0-100) -----
+  function bool(v) { return v ? 1 : 0; }
+  function s5(v) { return (typeof v === "number" && v >= 1) ? v / 5 : 0; }
+  function pct(parts) {
+    var sum = 0, w = 0;
+    parts.forEach(function (x) { sum += x.v * x.w; w += x.w; });
+    return w ? Math.round((sum / w) * 100) : 0;
+  }
+  function scoreDay(day) {
+    day = day || {};
+    var body = pct([
+      { v: bool(get(day,"body.trained")), w: 2 },
+      { v: s5(get(day,"body.nutrition")), w: 1.5 },
+      { v: (function(){ var h = get(day,"body.sleep"); return typeof h==="number" ? Math.max(0, Math.min(1, h/8)) : 0; })(), w: 1.5 },
+      { v: s5(get(day,"body.energy")), w: 1 },
+      { v: bool(get(day,"body.water")), w: 1 }
+    ]);
+    var mind = pct([
+      { v: s5(get(day,"mind.mood")), w: 1 },
+      { v: s5(get(day,"mind.calm")), w: 1 },
+      { v: s5(get(day,"mind.focus")), w: 1.5 },
+      { v: get(day,"mind.gratitude") ? 1 : 0, w: 1 }
+    ]);
+    var spirit = pct([
+      { v: bool(get(day,"spirit.prayer")), w: 2 },
+      { v: bool(get(day,"spirit.scripture")), w: 1.5 },
+      { v: s5(get(day,"spirit.closeness")), w: 1.5 }
+    ]);
+    var work = pct([
+      { v: bool(get(day,"work.deep")), w: 1.5 },
+      { v: bool(get(day,"work.revenue")), w: 2 },
+      { v: s5(get(day,"work.momentum")), w: 1.5 }
+    ]);
+    var overall = Math.round((body + mind + spirit + work) / 4);
+    return { body: body, mind: mind, spirit: spirit, work: work, overall: overall };
+  }
+
+  // ----- streak: consecutive days up to today with overall > 0 -----
+  function computeStreak() {
+    var n = 0, d = new Date(current + "T00:00:00");
+    for (;;) {
+      var off = d.getTimezoneOffset();
+      var key = new Date(d.getTime() - off * 60000).toISOString().slice(0, 10);
+      var day = all[key];
+      if (day && scoreDay(day).overall > 0) { n++; d.setDate(d.getDate() - 1); }
+      else break;
+    }
+    return n;
+  }
+
+  // ----- render summary -----
+  var RING_LEN = 402;
+  function verdictText(s) {
+    if (s >= 85) return "Elite day. 🔥";
+    if (s >= 70) return "Strong. Keep stacking.";
+    if (s >= 50) return "Solid base — push one pillar.";
+    if (s >= 25) return "Showed up. That counts.";
+    if (s > 0)  return "Small start. Build on it.";
+    return "Let's begin.";
+  }
+  function paint() {
+    var day = all[current] || {};
+    var sc = scoreDay(day);
+    document.getElementById("scoreBig").textContent = sc.overall;
+    document.getElementById("ring").setAttribute("stroke-dashoffset", RING_LEN - RING_LEN * sc.overall / 100);
+    document.getElementById("scoreVerdict").textContent = verdictText(sc.overall);
+    [["body",sc.body],["mind",sc.mind],["spirit",sc.spirit],["work",sc.work]].forEach(function (p) {
+      document.getElementById("v-" + p[0]).textContent = p[1];
+      document.getElementById("f-" + p[0]).style.width = p[1] + "%";
+    });
+    document.getElementById("streak").textContent = computeStreak();
+    paintTrend();
+  }
+
+  function paintTrend() {
+    var el = document.getElementById("trend");
+    var days = [], d = new Date(current + "T00:00:00");
+    for (var i = 6; i >= 0; i--) {
+      var dd = new Date(d); dd.setDate(d.getDate() - i);
+      var off = dd.getTimezoneOffset();
+      var key = new Date(dd.getTime() - off * 60000).toISOString().slice(0, 10);
+      var sc = all[key] ? scoreDay(all[key]).overall : 0;
+      days.push({ key: key, label: ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][dd.getDay()], score: sc });
+    }
+    if (days.every(function (x) { return x.score === 0; })) {
+      el.innerHTML = '<span class="empty-tip">Fill in a few days and your trend shows up here.</span>';
+      return;
+    }
+    el.innerHTML = days.map(function (x) {
+      return '<div class="b"><span class="val">' + (x.score || "") + '</span>' +
+        '<div class="bar" style="height:' + Math.max(3, x.score) + '%;background:' + (x.key === current ? "var(--accent)" : "#3a4160") + '"></div>' +
+        '<span class="day">' + x.label + '</span></div>';
+    }).join("");
+  }
+
+  // ----- build 1-5 scale controls -----
+  function buildScales() {
+    document.querySelectorAll(".scale").forEach(function (sc) {
+      for (var i = 1; i <= 5; i++) {
+        var b = document.createElement("button");
+        b.textContent = i; b.dataset.val = i;
+        b.addEventListener("click", function () {
+          var k = sc.dataset.k, val = parseInt(this.dataset.val, 10);
+          var day = all[current] || (all[current] = {});
+          if (get(day, k) === val) { set(day, k, 0); } else { set(day, k, val); }
+          persist(); syncScale(sc); paint();
+        });
+        sc.appendChild(b);
+      }
+    });
+  }
+  function syncScale(sc) {
+    var day = all[current] || {}, val = get(day, sc.dataset.k) || 0;
+    sc.querySelectorAll("button").forEach(function (b) {
+      b.classList.toggle("on", parseInt(b.dataset.val, 10) === val);
+    });
+  }
+
+  // ----- bind toggles / numbers / textareas -----
+  function bindInputs() {
+    document.querySelectorAll('input[type="checkbox"][data-k]').forEach(function (el) {
+      el.addEventListener("change", function () {
+        var day = all[current] || (all[current] = {});
+        set(day, el.dataset.k, el.checked); persist(); paint();
+      });
+    });
+    document.querySelectorAll('input.num[data-k]').forEach(function (el) {
+      el.addEventListener("input", function () {
+        var day = all[current] || (all[current] = {});
+        set(day, el.dataset.k, el.value === "" ? undefined : parseFloat(el.value)); persist(); paint();
+      });
+    });
+    document.querySelectorAll('textarea[data-k]').forEach(function (el) {
+      el.addEventListener("input", function () {
+        var day = all[current] || (all[current] = {});
+        set(day, el.dataset.k, el.value); persist();
+      });
+    });
+  }
+
+  // ----- load current day into controls -----
+  function loadDayIntoForm() {
+    var day = all[current] || {};
+    document.querySelectorAll('input[type="checkbox"][data-k]').forEach(function (el) {
+      el.checked = !!get(day, el.dataset.k);
+    });
+    document.querySelectorAll('input.num[data-k]').forEach(function (el) {
+      var v = get(day, el.dataset.k); el.value = (v === undefined || v === null) ? "" : v;
+    });
+    document.querySelectorAll('textarea[data-k]').forEach(function (el) {
+      el.value = get(day, el.dataset.k) || "";
+    });
+    document.querySelectorAll(".scale").forEach(syncScale);
+  }
+
+  // ----- persistence + status -----
+  var statusEl = document.getElementById("status"), tmr;
+  function persist() {
+    saveAll(all);
+    statusEl.textContent = "Saved ✓";
+    clearTimeout(tmr);
+    tmr = setTimeout(function () { statusEl.textContent = "Auto-saving on."; }, 1200);
+  }
+
+  // ----- export / import -----
+  document.getElementById("exportBtn").addEventListener("click", function () {
+    var blob = new Blob([JSON.stringify(all, null, 2)], { type: "application/json" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "andries-checkin-" + current + ".json";
+    a.click();
+  });
+  document.getElementById("importBtn").addEventListener("click", function () {
+    document.getElementById("importFile").click();
+  });
+  document.getElementById("importFile").addEventListener("change", function (e) {
+    var file = e.target.files[0]; if (!file) return;
+    var r = new FileReader();
+    r.onload = function () {
+      try {
+        var data = JSON.parse(r.result);
+        Object.keys(data).forEach(function (k) { all[k] = data[k]; });
+        saveAll(all); loadDayIntoForm(); paint();
+        statusEl.textContent = "Imported ✓";
+      } catch (err) { alert("Could not read that file."); }
+    };
+    r.readAsText(file);
+  });
+
+  // ----- reset day -----
+  document.getElementById("clearBtn").addEventListener("click", function () {
+    if (!confirm("Clear everything for " + current + "?")) return;
+    delete all[current]; saveAll(all); loadDayIntoForm(); paint();
+  });
+
+  // ----- date picker -----
+  var dp = document.getElementById("datePicker");
+  dp.value = current; dp.max = todayStr();
+  dp.addEventListener("change", function () {
+    current = dp.value || todayStr(); loadDayIntoForm(); paint();
+  });
+
+  // ----- init -----
+  buildScales();
+  bindInputs();
+  loadDayIntoForm();
+  paint();
+})();
+</script>
+</body>
+</html>
