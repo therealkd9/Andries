@@ -19,15 +19,15 @@ honest view of what you're actually practicing right now.
 Keep this list short — 1 to 3 at a time. Focus beats breadth.
 
 | Skill | Stage | Why it matters | Next action |
-|---|---|---|---|
-| _e.g. Writing in public_ | 🎯 Chosen | Builds the brand and clarifies thinking | Publish one short post |
-|  |  |  |  |
+|How to auotmate back ends for businesses|📚 **Learning**|After learning i can truly have something to offer|Learn exactly how much I can use claude|
+|Sell B2B|🎯 **Chosen**|It will make money now and later|Understanding the difference of the offer|
+|Understanding how to completely run a business|🎯 **Chosen**|It will affect everything|learning from my mistakes in the past|
 
 ## Backlog
 
 Skills you want, but not yet. Parking them here keeps the active list focused.
 
--
+- identifiying an oppurtunity and when to take it
 
 ## Wins log
 
