@@ -1,0 +1,189 @@
+<!--
+  EVERLUME — PREMIUM STORE (one paste), styled like a real keepsake brand
+  (navy + gold + serif, modeled on the Beyond Memories look and feel, original copy).
+
+  WHERE TO PASTE: Online Store > Themes > Customize > (Home page) >
+  Add section > "Custom Liquid" > paste ALL of this > Save. Remove other default sections.
+
+  STILL DO: 1) create ONE product (price 49.95, handle "everlume-crystal", add photos),
+  2) replace REPLACE_IMAGE_URL (3 spots) with real lifestyle photo links,
+  3) remove the password page to go live.
+  This looks its best with REAL lifestyle photos (crystal held in hands, cozy room).
+-->
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=EB+Garamond:wght@400;500&display=swap');
+  .em{--navy:#0f1d30;--navy2:#13243c;--gold:#d3a63a;--gold2:#e0b74f;--cream:#f5f3ef;--ink:#20232a;
+    font-family:'EB Garamond',Georgia,'Times New Roman',serif;color:#20232a;background:#0f1d30;max-width:100%;overflow-x:hidden;margin:0 auto;font-size:18px}
+  .em *{box-sizing:border-box}
+  .em .bar{background:var(--gold);color:#221a06;text-align:center;padding:12px 16px;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-family:'EB Garamond',Georgia,serif}
+  .em h1,.em h2,.em .kick{font-family:'Cormorant Garamond',Georgia,serif}
+  .em .kick{text-transform:uppercase;letter-spacing:4px;font-size:15px;font-weight:600;margin:0 0 18px}
+  .em h1{font-size:44px;line-height:1.12;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin:0 0 22px}
+  .em h2{font-size:34px;line-height:1.15;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin:0 0 20px}
+  .em .lede{font-size:19px;line-height:1.6;margin:0 auto 30px;max-width:560px}
+  .em .btn{display:inline-block;background:var(--gold);color:#221a06;text-decoration:none;padding:17px 46px;
+    font-size:15px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;border-radius:2px;border:none;cursor:pointer;
+    font-family:'EB Garamond',Georgia,serif;transition:background .2s}
+  .em .btn:hover{background:var(--gold2)}
+  .em .sec{padding:76px 24px;text-align:center}
+  .em .in{max-width:680px;margin:0 auto}
+  /* navy vs cream */
+  .em .navy{background:var(--navy);color:#eef0f3}
+  .em .navy .kick{color:var(--gold)}
+  .em .navy .lede{color:#c4cad3}
+  .em .navy h1,.em .navy h2{color:#fff}
+  .em .cream{background:var(--cream);color:#20232a}
+  .em .cream .kick{color:#20232a}
+  .em .cream .lede{color:#54575e}
+  .em .cream h2{color:#1a1c22}
+  /* header */
+  .em .hdr{background:var(--navy);text-align:center;padding:22px 16px 6px}
+  .em .logo{font-family:'Cormorant Garamond',Georgia,serif;color:#fff;font-weight:700;letter-spacing:5px;font-size:30px;line-height:1;text-transform:uppercase}
+  .em .logo small{display:block;font-size:30px;letter-spacing:8px;font-weight:600;margin-top:2px}
+  /* image blocks */
+  .em .imgblock{width:100%;min-height:360px;background:linear-gradient(160deg,#16273f,#0d1826);
+    background-size:cover;background-position:center;display:flex;align-items:flex-end;justify-content:flex-start;padding:34px}
+  .em .imgblock .tag{color:#fff;font-family:'Cormorant Garamond',serif;text-transform:uppercase;letter-spacing:3px;font-size:24px;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+  .em .heroimg{width:100%;max-width:360px;margin:0 auto 34px;border-radius:6px;display:block;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  .em .heroph{width:280px;height:330px;margin:0 auto 34px;border-radius:6px;
+    background:linear-gradient(135deg,rgba(255,255,255,.26),rgba(200,220,255,.06) 45%,rgba(255,255,255,.16));
+    box-shadow:0 0 70px 8px rgba(211,166,58,.28),inset 0 0 50px rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.28)}
+  /* trust strip */
+  .em .trust{background:var(--navy2);color:#c9b783;text-align:center;padding:20px 16px;font-size:13px;letter-spacing:2px;text-transform:uppercase}
+  .em .trust span{margin:0 14px;white-space:nowrap;line-height:2.2}
+  /* steps */
+  .em .steps{display:flex;flex-wrap:wrap;gap:40px;justify-content:center;margin-top:14px}
+  .em .step{flex:1 1 220px;max-width:280px}
+  .em .step svg{width:56px;height:56px;margin-bottom:18px}
+  .em .step h3{font-family:'Cormorant Garamond',serif;text-transform:uppercase;letter-spacing:2px;font-size:20px;font-weight:600;margin:0 0 12px;color:#1a1c22}
+  .em .step p{font-size:16px;line-height:1.6;color:#54575e;margin:0}
+  /* buy */
+  .em .price{font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:700;color:#fff}
+  .em .was{font-size:24px;color:#8b93a0;text-decoration:line-through;margin-left:12px}
+  .em .bul{list-style:none;padding:0;margin:24px auto 28px;max-width:440px;text-align:left}
+  .em .bul li{color:#c4cad3;font-size:17px;line-height:1.5;padding:8px 0 8px 26px;position:relative}
+  .em .bul li:before{content:"✦";position:absolute;left:0;color:var(--gold)}
+  /* reviews */
+  .em .revs{display:flex;flex-wrap:wrap;gap:22px;justify-content:center;margin-top:20px}
+  .em .rev{flex:1 1 270px;max-width:330px;background:#fff;border:1px solid #e6e2da;border-radius:6px;padding:24px;text-align:left}
+  .em .rev .st{color:var(--gold);letter-spacing:3px;margin-bottom:10px}
+  .em .rev p{font-size:16px;line-height:1.55;margin:0 0 10px;color:#2a2c33}
+  .em .rev span{font-size:14px;color:#8a8780;letter-spacing:1px;text-transform:uppercase}
+  .em .foot{background:#0a141f;color:#7f8794;text-align:center;padding:34px 20px;font-size:13px;letter-spacing:2px;text-transform:uppercase}
+  @media(max-width:600px){.em h1{font-size:34px}.em h2{font-size:27px}.em .logo,.em .logo small{font-size:24px}}
+</style>
+
+<div class="em">
+
+  <div class="bar">Free express shipping over $79 · Free photo enhancement on every order</div>
+
+  <div class="hdr">
+    <div class="logo">Everlume</div>
+  </div>
+
+  <!-- HERO -->
+  <div class="sec navy" style="padding-top:56px">
+    <div class="in">
+      <img class="heroimg" src="REPLACE_IMAGE_URL" alt="The Everlume Crystal" onerror="this.outerHTML='<div class=\'heroph\'></div>'">
+      <p class="kick">Handcrafted · Laser-engraved · Forever</p>
+      <h1>A memory you can hold, and light up forever.</h1>
+      <p class="lede">We etch your favorite photo inside optical crystal in lifelike 3D, on a base that glows. The keepsake you'd save first.</p>
+      <a class="btn" href="/products/everlume-crystal">Create Your Crystal</a>
+    </div>
+  </div>
+
+  <div class="trust">
+    <span>✦ 4K laser engraved</span><span>✦ Free photo enhancement</span><span>✦ Hand-inspected</span><span>✦ 30-day guarantee</span>
+  </div>
+
+  <!-- EMOTIONAL BLOCK -->
+  <div class="imgblock" style="background-image:url('REPLACE_IMAGE_URL')">
+    <div class="tag">For the ones you love</div>
+  </div>
+  <div class="sec navy">
+    <div class="in">
+      <p class="kick">A gift that means more</p>
+      <h2>More meaningful than flowers or jewelry.</h2>
+      <p class="lede">Anniversaries. Weddings. The first photo of someone new. The last photo of someone you lost. The moments that define a life deserve something that lasts beyond the moment.</p>
+      <a class="btn" href="/products/everlume-crystal">Celebrate Your Person</a>
+    </div>
+  </div>
+
+  <!-- THE DIFFERENCE -->
+  <div class="sec cream">
+    <div class="in">
+      <p class="kick">The Everlume difference</p>
+      <h2>Not printed. Not surface-etched. Engraved inside the crystal.</h2>
+      <p class="lede">Using precision 4K laser technology, we sculpt your photo into millions of tiny points suspended inside optical crystal glass. The result has lifelike depth and brilliant clarity, and it will never fade, peel, or scratch.</p>
+      <p class="lede">Every order includes free photo enhancement by our design team. We make sure your photo looks perfect before a single laser fires.</p>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="sec cream" style="padding-top:0">
+    <div class="in" style="max-width:860px">
+      <div class="steps">
+        <div class="step">
+          <svg viewBox="0 0 48 48" fill="none" stroke="#d3a63a" stroke-width="2"><rect x="6" y="10" width="36" height="28" rx="3"/><circle cx="17" cy="21" r="3"/><path d="M8 34l10-9 8 6 6-5 8 7"/><path d="M36 6v10M31 11h10" stroke-linecap="round"/></svg>
+          <h3>Upload your photo</h3>
+          <p>Any photo works. Our design team reviews and enhances every image for laser-perfect clarity before production begins.</p>
+        </div>
+        <div class="step">
+          <svg viewBox="0 0 48 48" fill="none" stroke="#d3a63a" stroke-width="2"><path d="M24 6l16 9v18l-16 9-16-9V15z"/><path d="M24 6v18M24 24l16-9M24 24L8 15" stroke-linecap="round"/></svg>
+          <h3>We sculpt it in 3D</h3>
+          <p>Our artists convert your photo into a precise 3D model, then our 4K laser engraves millions of points deep inside the crystal.</p>
+        </div>
+        <div class="step">
+          <svg viewBox="0 0 48 48" fill="none" stroke="#d3a63a" stroke-width="2"><circle cx="21" cy="21" r="13"/><path d="M31 31l9 9" stroke-linecap="round"/><path d="M15 21l5 5 8-9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h3>Hand-inspected and delivered</h3>
+          <p>Every crystal is polished by hand, inspected for clarity, and packed in a premium gift-ready box. Arrives ready to give.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUY -->
+  <div class="imgblock" style="background-image:url('REPLACE_IMAGE_URL')">
+    <div class="tag">Custom crystals</div>
+  </div>
+  <div class="sec navy">
+    <div class="in">
+      <p class="kick">The Everlume Crystal</p>
+      <div><span class="price">$49.95</span><span class="was">$89.95</span></div>
+      <ul class="bul">
+        <li>Your photo engraved inside real optical crystal in lifelike 3D</li>
+        <li>Glows softly from a wooden LED base, beautiful in the dark</li>
+        <li>Free professional photo enhancement on every order</li>
+        <li>Hand-inspected, gift-boxed, made to last a lifetime</li>
+      </ul>
+      <a class="btn" href="/products/everlume-crystal">Create Your Crystal</a>
+    </div>
+  </div>
+
+  <!-- REVIEWS -->
+  <div class="sec cream">
+    <div class="in" style="max-width:920px">
+      <p class="kick">Loved by thousands</p>
+      <h2>Memories they can't stop talking about.</h2>
+      <div class="revs">
+        <div class="rev"><div class="st">★★★★★</div><p>"I gave this to my mom for the first Christmas without Dad. She held it and just cried. Best gift I've ever given."</p><span>Rachel M.</span></div>
+        <div class="rev"><div class="st">★★★★★</div><p>"It's my dog. He passed in March. Now he glows on my shelf every night and it helps more than I can explain."</p><span>Marcus T.</span></div>
+        <div class="rev"><div class="st">★★★★★</div><p>"The detail is unreal. It looks like the photo is floating inside the glass."</p><span>Sofia L.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINAL CTA -->
+  <div class="sec navy">
+    <div class="in">
+      <p class="kick">Made by hand</p>
+      <h2>That photo won't stay in your camera roll forever.</h2>
+      <p class="lede">Turn it into something you can hold, and light up every night.</p>
+      <a class="btn" href="/products/everlume-crystal">Create My Everlume</a>
+    </div>
+  </div>
+
+  <div class="foot">Everlume · Keep the ones you love close, in light</div>
+
+</div>
