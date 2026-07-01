@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Everlume Crystal — Custom 3D Photo Crystal</title>
+<meta name="description" content="Turn your favorite photo into a glowing 3D crystal keepsake. Laser-etched, hand-inspected, gift-boxed. 30-day guarantee.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=EB+Garamond:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#0f1d30;--navy2:#13243c;--gold:#d3a63a;--gold2:#e0b74f;--cream:#f5f3ef;--ink:#20232a}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'EB Garamond',Georgia,serif;color:#eef0f3;background:var(--navy);font-size:18px;line-height:1.5}
+  a{color:inherit}
+  h1,h2,h3,.kick,.logo{font-family:'Cormorant Garamond',Georgia,serif}
+  .bar{background:var(--gold);color:#221a06;text-align:center;padding:12px 16px;font-size:13px;letter-spacing:2px;text-transform:uppercase}
+  header{background:var(--navy);display:flex;align-items:center;justify-content:center;padding:22px 16px;position:relative;border-bottom:1px solid #1c2c44}
+  .logo{color:#fff;font-weight:700;letter-spacing:6px;font-size:28px;text-transform:uppercase;text-decoration:none}
+  .wrap{max-width:1040px;margin:0 auto;padding:40px 22px}
+  .grid{display:flex;flex-wrap:wrap;gap:40px}
+  .gallery{flex:1 1 380px}
+  .gallery .main{width:100%;border-radius:8px;display:block;box-shadow:0 20px 60px rgba(0,0,0,.5);background:linear-gradient(160deg,#16273f,#0d1826);aspect-ratio:1/1;object-fit:cover}
+  .thumbs{display:flex;gap:12px;margin-top:14px}
+  .thumbs img{width:82px;height:82px;object-fit:cover;border-radius:6px;cursor:pointer;border:1px solid #22334c;background:#16273f}
+  .info{flex:1 1 360px}
+  .kick{text-transform:uppercase;letter-spacing:3px;font-size:14px;color:var(--gold);margin-bottom:12px}
+  h1{font-size:36px;line-height:1.15;font-weight:600;color:#fff;margin-bottom:14px}
+  .stars{color:var(--gold);letter-spacing:2px}.stars small{color:#9aa2ad;letter-spacing:0;margin-left:8px}
+  .price{margin:18px 0}.price b{font-family:'Cormorant Garamond',serif;font-size:40px;color:#fff}.price s{font-size:22px;color:#8b93a0;margin-left:10px}
+  .bul{list-style:none;margin:22px 0}
+  .bul li{padding:7px 0 7px 26px;position:relative;color:#c4cad3;font-size:17px}
+  .bul li:before{content:"✦";position:absolute;left:0;color:var(--gold)}
+  label{display:block;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#9aa2ad;margin:18px 0 8px}
+  select{width:100%;padding:14px;border-radius:4px;border:1px solid #2a3b55;background:#16273f;color:#fff;font-family:inherit;font-size:16px}
+  .buy{display:block;width:100%;text-align:center;background:var(--gold);color:#221a06;text-decoration:none;padding:19px;font-size:16px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-radius:3px;margin-top:22px;border:none;cursor:pointer}
+  .buy:hover{background:var(--gold2)}
+  .note{font-size:14px;color:#9aa2ad;text-align:center;margin-top:14px;line-height:1.6}
+  .desc{max-width:760px;margin:60px auto 0}
+  .desc h2{font-family:'Cormorant Garamond',serif;text-transform:uppercase;letter-spacing:1px;color:#fff;font-size:26px;margin-bottom:16px}
+  .desc p{color:#c4cad3;margin-bottom:16px;line-height:1.7}
+  details{border-top:1px solid #22334c;padding:16px 0}
+  summary{cursor:pointer;font-family:'Cormorant Garamond',serif;font-size:19px;color:#fff;list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary:before{content:"+ ";color:var(--gold)}
+  details[open] summary:before{content:"– "}
+  details p{color:#9aa2ad;margin-top:12px}
+  footer{background:#0a141f;color:#7f8794;text-align:center;padding:34px 20px;font-size:13px;letter-spacing:2px;text-transform:uppercase;margin-top:60px}
+  @media(max-width:600px){h1{font-size:29px}}
+</style>
+</head>
+<body>
+
+<div class="bar">Free express shipping over $79 · Free photo enhancement on every order</div>
+<header><a href="/" class="logo">Everlume</a></header>
+
+<div class="wrap">
+  <div class="grid">
+    <div class="gallery">
+      <img class="main" id="main" src="https://cdn.shopify.com/s/files/1/0975/1114/5772/files/Ever1.webp?v=1782875945" alt="The Everlume Crystal">
+      <div class="thumbs">
+        <img src="https://cdn.shopify.com/s/files/1/0975/1114/5772/files/Ever1.webp?v=1782875945" onclick="document.getElementById('main').src=this.src" alt="">
+        <img src="https://cdn.shopify.com/s/files/1/0975/1114/5772/files/Ever2.webp?v=1782875945" onclick="document.getElementById('main').src=this.src" alt="">
+        <img src="https://cdn.shopify.com/s/files/1/0975/1114/5772/files/Ever3.webp?v=1782875945" onclick="document.getElementById('main').src=this.src" alt="">
+      </div>
+    </div>
+
+    <div class="info">
+      <p class="kick">Custom 3D Photo Crystal</p>
+      <h1>The Everlume Crystal</h1>
+      <div class="stars">★★★★★ <small>4.9 · 2,300+ reviews</small></div>
+      <div class="price"><b>$49.95</b> <s>$89.95</s></div>
+      <ul class="bul">
+        <li>Your photo engraved inside real optical crystal in lifelike 3D</li>
+        <li>Glows softly from a wooden LED base, beautiful in the dark</li>
+        <li>Free professional photo enhancement on every order</li>
+        <li>Hand-inspected, gift-boxed, made to last a lifetime</li>
+      </ul>
+
+      <label for="size">Size</label>
+      <select id="size">
+        <option>Small · Nightstand</option>
+        <option>Medium · Most loved</option>
+        <option>Large · Statement</option>
+      </select>
+
+      <!-- BUY BUTTON: replace the href with your Stripe Payment Link once you make one -->
+      <a class="buy" href="STRIPE_PAYMENT_LINK">Create My Crystal →</a>
+      <p class="note">After checkout, you'll get an email to upload your photo. Free shipping · 30-day happiness guarantee · Hand-checked before it ships.</p>
+    </div>
+  </div>
+
+  <div class="desc">
+    <h2>Some photos deserve more than a phone screen</h2>
+    <p>The last one of someone you lost. The first one of someone new. The one that still stops your heart. The Everlume Crystal takes that photo and etches it inside clear optical crystal, capturing every detail in light.</p>
+    <p>Set on its wooden base, it glows softly from below, so the face you love shines in the quiet of the evening. People tell us they keep it on the nightstand and turn it on every night. That it helped them grieve. That it made their mom cry in the best way.</p>
+    <p>Upload your photo, we handle the rest, and in a few days you're holding a memory made to last a lifetime.</p>
+
+    <div style="margin-top:30px">
+      <details open><summary>What photo works best?</summary><p>A clear, well-lit photo with the faces easy to see. You upload it after checkout, and our team enhances it for free before engraving.</p></details>
+      <details><summary>How long does it take?</summary><p>Each crystal is made to order and engraved by hand, so allow a few days to craft it, plus shipping. We keep you updated.</p></details>
+      <details><summary>Is the light base included?</summary><p>Yes, every crystal comes with its wooden LED base.</p></details>
+      <details><summary>What if something's wrong?</summary><p>We hand-check every crystal and you're covered by our 30-day happiness guarantee. If it's not right, we make it right or refund you.</p></details>
+    </div>
+  </div>
+</div>
+
+<footer>Everlume · Keep the ones you love close, in light</footer>
+
+</body>
+</html>
