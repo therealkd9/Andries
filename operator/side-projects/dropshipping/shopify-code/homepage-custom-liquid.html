@@ -1,0 +1,126 @@
+<!--
+  CalmPaws HOMEPAGE
+  WHERE TO PASTE: Shopify admin > Online Store > Themes > Customize >
+  Add section > "Custom Liquid" > paste ALL of this into the box > Save.
+  (You can add this Custom Liquid section on the homepage and delete the other
+  default sections above/below it.)
+
+  BEFORE YOU PASTE: replace the two image spots marked REPLACE_IMAGE_URL with
+  your own image links (upload photos in Shopify > Content > Files, click the
+  photo, copy its link, paste it in). If you skip this, colored blocks show
+  instead, which still looks fine to launch.
+-->
+
+<style>
+  .cp-wrap { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #3a352f; max-width: 100%; overflow-x: hidden; }
+  .cp-bar { background: #6b7d6a; color: #fff; text-align: center; padding: 10px 16px; font-size: 14px; letter-spacing: .3px; }
+  .cp-section { padding: 56px 20px; text-align: center; }
+  .cp-inner { max-width: 720px; margin: 0 auto; }
+  .cp-cream { background: #f7f2ea; }
+  .cp-sage { background: #eef1ea; }
+  .cp-hero { background: #f0e9dd; padding: 72px 20px; }
+  .cp-hero img { max-width: 340px; width: 100%; border-radius: 20px; margin-bottom: 28px; }
+  .cp-h1 { font-size: 34px; line-height: 1.2; font-weight: 700; margin: 0 0 14px; }
+  .cp-h2 { font-size: 26px; line-height: 1.25; font-weight: 700; margin: 0 0 14px; }
+  .cp-sub { font-size: 18px; line-height: 1.5; color: #5c564d; margin: 0 0 26px; }
+  .cp-p { font-size: 17px; line-height: 1.6; color: #5c564d; margin: 0 auto 18px; max-width: 620px; }
+  .cp-btn { display: inline-block; background: #c98a5e; color: #fff; text-decoration: none; padding: 15px 34px; border-radius: 40px; font-size: 17px; font-weight: 600; }
+  .cp-btn:hover { background: #b97b50; }
+  .cp-trust { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 26px; padding: 22px 20px; background: #fff; font-size: 14px; color: #6b6459; }
+  .cp-cols { display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; margin-top: 20px; }
+  .cp-col { flex: 1 1 200px; max-width: 260px; background: #fff; border-radius: 16px; padding: 26px 20px; }
+  .cp-col h3 { font-size: 19px; margin: 0 0 8px; }
+  .cp-col p { font-size: 15px; color: #6b6459; margin: 0; line-height: 1.5; }
+  .cp-reviews { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 24px; }
+  .cp-review { flex: 1 1 260px; max-width: 320px; background: #fff; border-radius: 16px; padding: 22px; text-align: left; }
+  .cp-review p { font-size: 15px; line-height: 1.55; margin: 0 0 10px; color: #3a352f; }
+  .cp-review span { font-size: 14px; color: #8a8272; }
+  .cp-stars { color: #e0a94a; letter-spacing: 2px; }
+  .cp-imgbox { width: 100%; max-width: 420px; height: 240px; background: #e3d8c6; border-radius: 18px; margin: 0 auto 26px; object-fit: cover; display: block; }
+  @media (max-width: 600px) { .cp-h1 { font-size: 28px; } .cp-h2 { font-size: 22px; } }
+</style>
+
+<div class="cp-wrap">
+
+  <!-- Announcement bar -->
+  <div class="cp-bar">Free shipping today. Calm nights, happy pup. 🐾</div>
+
+  <!-- Hero -->
+  <div class="cp-hero">
+    <div class="cp-inner">
+      <!-- REPLACE_IMAGE_URL below with your hero product photo link -->
+      <img src="REPLACE_IMAGE_URL" alt="CalmPaws Calming Cloud Bed" onerror="this.style.display='none'">
+      <h1 class="cp-h1">Help your anxious pup finally feel safe.</h1>
+      <p class="cp-sub">The Calming Cloud Bed wraps your dog in cozy, raised-rim comfort that helps them settle, stop the pacing, and actually sleep through the night.</p>
+      <a class="cp-btn" href="/products/calmpaws-calming-cloud-bed">Calm My Pup</a>
+    </div>
+  </div>
+
+  <!-- Trust strip -->
+  <div class="cp-trust">
+    <span>🐾 30,000+ calmer pups</span>
+    <span>🚚 Free shipping</span>
+    <span>💛 30-day happiness guarantee</span>
+    <span>🏡 Loved by rescue parents</span>
+  </div>
+
+  <!-- Problem -->
+  <div class="cp-section cp-cream">
+    <div class="cp-inner">
+      <h2 class="cp-h2">If your dog paces, whines, or shakes, you know the feeling.</h2>
+      <p class="cp-p">You hate leaving them. The thunder rolls in and they're trembling by your feet. They circle the same spot for ten minutes and still can't get comfortable. You've tried the blankets, the crate, the old bed they shredded. Your pup isn't being difficult. They just don't feel safe yet.</p>
+    </div>
+  </div>
+
+  <!-- Solution -->
+  <div class="cp-section">
+    <div class="cp-inner">
+      <!-- REPLACE_IMAGE_URL below with a photo of a dog curled in the bed -->
+      <img class="cp-imgbox" src="REPLACE_IMAGE_URL" alt="Dog resting in the Calming Cloud Bed" onerror="this.style.background='#e3d8c6'">
+      <h2 class="cp-h2">A bed built to feel like a hug.</h2>
+      <p class="cp-p">The Calming Cloud Bed has a deep, raised rim your dog can nuzzle into and soft filling that supports their joints. The round shape lets them curl up the way they naturally do when they feel secure. Most pups settle in within the first night.</p>
+      <a class="cp-btn" href="/products/calmpaws-calming-cloud-bed">Bring Home Calm</a>
+    </div>
+  </div>
+
+  <!-- How it helps -->
+  <div class="cp-section cp-sage">
+    <div class="cp-inner">
+      <h2 class="cp-h2">How it helps</h2>
+      <div class="cp-cols">
+        <div class="cp-col"><h3>Feels safe</h3><p>The raised edge gives a sense of security, like a den.</p></div>
+        <div class="cp-col"><h3>Sleeps better</h3><p>Soft, supportive filling means deeper rest for them and you.</p></div>
+        <div class="cp-col"><h3>Easy on you</h3><p>Machine washable, holds its shape, and cheaper than replacing chewed-up beds.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reviews -->
+  <div class="cp-section">
+    <div class="cp-inner" style="max-width:900px;">
+      <h2 class="cp-h2">Loved by pet parents like you</h2>
+      <div class="cp-reviews">
+        <div class="cp-review"><div class="cp-stars">★★★★★</div><p>"My rescue used to shake every storm. First night in this bed he actually slept. I cried, not gonna lie."</p><span>Maria R.</span></div>
+        <div class="cp-review"><div class="cp-stars">★★★★★</div><p>"Bought it skeptical. My senior lab hasn't slept this well in years."</p><span>Dan K.</span></div>
+        <div class="cp-review"><div class="cp-stars">★★★★★</div><p>"He stopped pacing at 3am. That alone is worth it."</p><span>Priya S.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Guarantee -->
+  <div class="cp-section cp-cream">
+    <div class="cp-inner">
+      <h2 class="cp-h2">30 nights, or your money back.</h2>
+      <p class="cp-p">If your pup doesn't settle in better within 30 days, we'll refund you. No hassle. We only want you to pay if it actually helps.</p>
+    </div>
+  </div>
+
+  <!-- Final CTA -->
+  <div class="cp-section">
+    <div class="cp-inner">
+      <h2 class="cp-h2">Tonight could be the night they finally rest.</h2>
+      <a class="cp-btn" href="/products/calmpaws-calming-cloud-bed">Get the Calming Cloud Bed</a>
+    </div>
+  </div>
+
+</div>
