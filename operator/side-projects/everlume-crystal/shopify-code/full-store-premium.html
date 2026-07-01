@@ -42,9 +42,9 @@
   .em .logo{font-family:'Cormorant Garamond',Georgia,serif;color:#fff;font-weight:700;letter-spacing:5px;font-size:30px;line-height:1;text-transform:uppercase}
   .em .logo small{display:block;font-size:30px;letter-spacing:8px;font-weight:600;margin-top:2px}
   /* image blocks */
-  .em .imgblock{width:100%;min-height:360px;background:linear-gradient(160deg,#16273f,#0d1826);
-    background-size:cover;background-position:center;display:flex;align-items:flex-end;justify-content:flex-start;padding:34px}
-  .em .imgblock .tag{color:#fff;font-family:'Cormorant Garamond',serif;text-transform:uppercase;letter-spacing:3px;font-size:24px;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+  .em .imgblock{position:relative;width:100%;background:linear-gradient(160deg,#16273f,#0d1826);overflow:hidden}
+  .em .imgblock img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block}
+  .em .imgblock .tag{position:absolute;left:0;bottom:0;padding:30px;color:#fff;font-family:'Cormorant Garamond',serif;text-transform:uppercase;letter-spacing:3px;font-size:24px;text-shadow:0 2px 12px rgba(0,0,0,.6)}
   .em .heroimg{width:100%;max-width:360px;margin:0 auto 34px;border-radius:6px;display:block;box-shadow:0 20px 60px rgba(0,0,0,.5)}
   .em .heroph{width:280px;height:330px;margin:0 auto 34px;border-radius:6px;
     background:linear-gradient(135deg,rgba(255,255,255,.26),rgba(200,220,255,.06) 45%,rgba(255,255,255,.16));
@@ -98,7 +98,8 @@
   </div>
 
   <!-- EMOTIONAL BLOCK -->
-  <div class="imgblock" style="background-image:url('REPLACE_IMAGE_URL')">
+  <div class="imgblock">
+    <img src="REPLACE_IMAGE_URL" alt="For the ones you love" onerror="this.style.display='none'">
     <div class="tag">For the ones you love</div>
   </div>
   <div class="sec navy">
@@ -144,7 +145,8 @@
   </div>
 
   <!-- BUY -->
-  <div class="imgblock" style="background-image:url('REPLACE_IMAGE_URL')">
+  <div class="imgblock">
+    <img src="REPLACE_IMAGE_URL" alt="Custom crystals" onerror="this.style.display='none'">
     <div class="tag">Custom crystals</div>
   </div>
   <div class="sec navy">
