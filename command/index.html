@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Andries · Command Center</title>
+<link rel="manifest" href="./manifest.webmanifest" />
+<meta name="theme-color" content="#0c0e14" />
+<link rel="apple-touch-icon" href="../dashboard/apple-touch-icon.png" />
+<link rel="icon" href="../dashboard/icon-192.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="Andries HQ" />
+<style>
+  :root{
+    --bg:#0c0e14; --panel:#151823; --panel2:#1b1f2e; --line:#262b3d;
+    --text:#e6e9f2; --muted:#8b92a8; --accent:#6c8cff; --money:#4ade80; --warn:#fbbf24; --bad:#f87171;
+    --f1:#93b4ff; --f2:#6c8cff; --f3:#5a78e6; --f4:#4a63c8; --f5:#3a4fa0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:radial-gradient(1100px 560px at 50% -10%,#161a2b,var(--bg) 60%);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    min-height:100vh;padding:26px 16px 90px;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1080px;margin:0 auto;}
+  a{color:var(--accent);text-decoration:none;}
+
+  header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:8px;}
+  .brand h1{font-size:22px;letter-spacing:.3px;}
+  .brand h1 span{color:var(--accent);}
+  .brand p{color:var(--muted);font-size:13px;margin-top:2px;}
+  .topbar{display:flex;gap:8px;align-items:center;}
+  .pill{font-size:12px;color:var(--muted);background:var(--panel);border:1px solid var(--line);padding:6px 12px;border-radius:999px;}
+  .pill b{color:var(--accent);}
+  .btn{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:8px 14px;font-size:13px;cursor:pointer;}
+  .btn:hover{border-color:var(--accent);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .nav{font-size:13px;color:var(--muted);margin-bottom:18px;}
+  .nav a{margin-right:14px;}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;}
+  h2.sec{font-size:12px;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted);margin:24px 4px 12px;}
+
+  /* KPI row */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  @media(max-width:720px){.kpis{grid-template-columns:repeat(2,1fr);}}
+  .kpi .lbl{font-size:12px;color:var(--muted);}
+  .kpi .val{font-size:30px;font-weight:700;margin-top:6px;line-height:1;}
+  .kpi .sub{font-size:12px;color:var(--muted);margin-top:6px;}
+  .kpi .val.money{color:var(--money);}
+
+  /* Revenue to goal */
+  .goalwrap{margin-top:14px;}
+  .goaltop{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--muted);}
+  .goaltop b{color:var(--text);font-size:15px;}
+  .track{position:relative;height:16px;background:#0e1118;border-radius:999px;margin-top:10px;overflow:hidden;border:1px solid var(--line);}
+  .fill{height:100%;width:0;background:linear-gradient(90deg,#2f8f57,var(--money));border-radius:999px;transition:width .5s ease;}
+  .marks{position:relative;height:16px;margin-top:2px;font-size:10px;color:var(--muted);}
+  .mark{position:absolute;transform:translateX(-50%);}
+  .mark:before{content:"";position:absolute;top:-6px;left:50%;width:1px;height:5px;background:var(--muted);}
+
+  /* Funnel */
+  .funnel .frow{display:grid;grid-template-columns:120px 1fr 44px;align-items:center;gap:10px;margin:9px 0;}
+  .funnel .fname{font-size:13px;color:var(--text);}
+  .funnel .ftrack{height:22px;background:#0e1118;border-radius:7px;overflow:hidden;}
+  .funnel .ffill{height:100%;width:0;border-radius:7px;transition:width .5s ease;min-width:3px;}
+  .funnel .fcount{font-size:14px;font-weight:700;text-align:right;}
+
+  /* Leads table */
+  .tablewrap{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;font-size:13px;min-width:720px;}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle;}
+  th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.5px;}
+  td .biz{font-weight:600;}
+  td .meta{color:var(--muted);font-size:11px;}
+  select,input.cell{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:6px 8px;font-size:12px;font-family:inherit;}
+  input.cell{width:74px;text-align:right;}
+  input.note{width:150px;text-align:left;}
+  .stage-sel{min-width:120px;}
+  .del{color:var(--muted);cursor:pointer;border:none;background:none;font-size:15px;}
+  .del:hover{color:var(--bad);}
+  .addbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+  .addbar input{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 10px;font-size:13px;font-family:inherit;}
+
+  .foot{position:fixed;bottom:0;left:0;right:0;background:rgba(12,14,20,.9);backdrop-filter:blur(8px);border-top:1px solid var(--line);
+    padding:11px 18px calc(11px + env(safe-area-inset-bottom));display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;}
+  .foot .status{color:var(--muted);font-size:12px;margin-right:auto;}
+  .stage-badge{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <h1><span>Andries</span> · Command Center</h1>
+      <p>Every lead, every stage, every dollar toward the goal.</p>
+    </div>
+    <div class="topbar">
+      <button class="btn" id="authBtn" style="display:none">Sign in to sync</button>
+      <span class="pill" id="syncPill" style="display:none">☁️ <b id="syncState">…</b></span>
+    </div>
+  </header>
+  <div class="nav">
+    <a href="../dashboard/">← Daily Check-In</a>
+    <a href="../demo/?name=Your%20Business&type=hvac" target="_blank">Demo preview</a>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpis">
+    <div class="card kpi"><div class="lbl">Recurring / month</div><div class="val money" id="k-mrr">$0</div><div class="sub" id="k-mrr-sub">goal $8k–$10k</div></div>
+    <div class="card kpi"><div class="lbl">Cash collected</div><div class="val" id="k-cash">$0</div><div class="sub">setup fees to date</div></div>
+    <div class="card kpi"><div class="lbl">Clients won</div><div class="val" id="k-won">0</div><div class="sub" id="k-won-sub">need ~12 at $750/mo</div></div>
+    <div class="card kpi"><div class="lbl">Active leads</div><div class="val" id="k-active">0</div><div class="sub" id="k-active-sub">in the pipeline</div></div>
+  </div>
+
+  <!-- Revenue to goal -->
+  <h2 class="sec">Recurring revenue to goal</h2>
+  <div class="card goalwrap">
+    <div class="goaltop"><span><b id="g-mrr">$0</b> monthly recurring</span><span>target <b>$10,000</b></span></div>
+    <div class="track"><div class="fill" id="g-fill"></div></div>
+    <div class="marks">
+      <span class="mark" style="left:80%">$8k</span>
+      <span class="mark" style="left:100%;transform:translateX(-100%)">$10k</span>
+    </div>
+  </div>
+
+  <!-- Funnel -->
+  <h2 class="sec">Pipeline funnel</h2>
+  <div class="card funnel" id="funnel"></div>
+
+  <!-- Leads -->
+  <h2 class="sec">Leads</h2>
+  <div class="card">
+    <div class="tablewrap">
+      <table>
+        <thead><tr>
+          <th>Business</th><th>Stage</th><th>Setup $</th><th>Monthly $</th><th>Next action</th><th></th>
+        </tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <div class="addbar">
+      <input id="add-biz" placeholder="Business name" />
+      <input id="add-trade" placeholder="Trade (hvac, plumbing…)" />
+      <input id="add-contact" placeholder="Email / phone" />
+      <button class="btn primary" id="addBtn">+ Add lead</button>
+    </div>
+  </div>
+</div>
+
+<div class="foot">
+  <span class="status" id="status">Saved automatically ✓</span>
+  <button class="btn" id="weekBtn">Log this week</button>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var KEY="andries.pipeline.v1";
+  var STAGES=["Researched","Contacted","Replied","Call booked","Proposal","Won","Lost"];
+  var STAGE_COLOR={Researched:"#8b92a8",Contacted:"#93b4ff",Replied:"#6c8cff",
+    "Call booked":"#fbbf24","Proposal":"#f59e0b",Won:"#4ade80",Lost:"#f87171"};
+  var FUNNEL_STAGES=["Researched","Contacted","Replied","Call booked","Won"];
+  var FUNNEL_FILL={Researched:"var(--f1)","Contacted":"var(--f2)","Replied":"var(--f3)","Call booked":"var(--warn)","Won":"var(--money)"};
+
+  function seed(){
+    var L=[
+      ["Fontenot's A/C & Heating","hvac","sales@fontenotsac.com"],
+      ["Legacy Cooling & Heating","hvac","(337) 654-5767"],
+      ["King Electrical & Controls","electrical","(337) 886-7111"],
+      ["Hibbard Roofing & Construction","roofing","Bhibbard@hibbardcontractors.com"],
+      ["Cajun Plumbing of Lafayette","plumbing","(337) 258-2846"],
+      ["Keown Plumbing","plumbing","(337) 254-0298"],
+      ["Dave Broussard A/C & Heating","hvac","(337) 330-1111"],
+      ["Chris' Electrical Service","electrical","(337) 981-0671"],
+      ["Superior Garage Doors","garage","(337) 277-5513"],
+      ["Brothers Lawn Service","landscaping","(337) 781-7494"],
+      ["La Lou Lawn & Landscape","landscaping","laloulawn.com"],
+      ["Beebe's Pest & Termite","pest","beebespest.com"]
+    ];
+    return L.map(function(x,i){return {id:"seed"+i,business:x[0],trade:x[1],contact:x[2],
+      stage:"Researched",setup:0,monthly:0,note:"Send demo email",_u:0};});
+  }
+
+  var store;
+  function load(){ try{store=JSON.parse(localStorage.getItem(KEY));}catch(e){store=null;}
+    if(!store||!store.leads){ store={leads:seed(),updatedAt:1}; save(); } }
+  function save(){ localStorage.setItem(KEY,JSON.stringify(store)); }
+  function touch(){ store.updatedAt=Date.now(); save(); if(window.__push)window.__push(); }
+
+  var $=function(id){return document.getElementById(id);};
+  function money(n){ return "$"+(Math.round(n||0)).toLocaleString(); }
+
+  function metrics(){
+    var m={mrr:0,cash:0,won:0,active:0,stages:{}};
+    STAGES.forEach(function(s){m.stages[s]=0;});
+    store.leads.forEach(function(l){
+      m.stages[l.stage]=(m.stages[l.stage]||0)+1;
+      if(l.stage==="Won"){ m.mrr+=(+l.monthly||0); m.cash+=(+l.setup||0); m.won++; }
+      if(l.stage!=="Lost") m.active++;
+    });
+    return m;
+  }
+  // cumulative funnel: how many reached at least this stage
+  function reachedAtLeast(stage){
+    var order=["Researched","Contacted","Replied","Call booked","Proposal","Won"];
+    var idx=order.indexOf(stage), n=0;
+    store.leads.forEach(function(l){
+      var li=order.indexOf(l.stage);
+      if(li>=idx && l.stage!=="Lost") n++;
+    });
+    return n;
+  }
+
+  function render(){
+    var m=metrics();
+    $("k-mrr").textContent=money(m.mrr);
+    $("k-cash").textContent=money(m.cash);
+    $("k-won").textContent=m.won;
+    $("k-active").textContent=m.active;
+    $("k-won-sub").textContent=m.won>0?("~"+Math.max(0,12-m.won)+" more to $9k/mo"):"need ~12 at $750/mo";
+    $("g-mrr").textContent=money(m.mrr);
+    var pct=Math.min(100,(m.mrr/10000)*100);
+    $("g-fill").style.width=pct+"%";
+
+    // funnel (cumulative reach)
+    var f=$("funnel"); f.innerHTML="";
+    var maxN=Math.max(1,reachedAtLeast("Researched"));
+    FUNNEL_STAGES.forEach(function(s){
+      var n=(s==="Won")?m.stages["Won"]:reachedAtLeast(s);
+      var row=document.createElement("div"); row.className="frow";
+      row.innerHTML='<div class="fname">'+s+'</div>'+
+        '<div class="ftrack"><div class="ffill" title="'+s+': '+n+'" style="width:'+Math.max(3,(n/maxN)*100)+'%;background:'+FUNNEL_FILL[s]+'"></div></div>'+
+        '<div class="fcount">'+n+'</div>';
+      f.appendChild(row);
+    });
+
+    renderRows();
+    setStatusSaved();
+  }
+
+  function renderRows(){
+    var tb=$("rows"); tb.innerHTML="";
+    store.leads.forEach(function(l){
+      var tr=document.createElement("tr");
+      // business
+      var td1=document.createElement("td");
+      td1.innerHTML='<div class="biz">'+esc(l.business)+'</div><div class="meta">'+esc(l.trade||"")+(l.contact?' · '+esc(l.contact):'')+'</div>';
+      tr.appendChild(td1);
+      // stage select
+      var td2=document.createElement("td");
+      var sel=document.createElement("select"); sel.className="stage-sel";
+      STAGES.forEach(function(s){ var o=document.createElement("option"); o.value=s; o.textContent=s; if(s===l.stage)o.selected=true; sel.appendChild(o); });
+      sel.style.borderLeft="3px solid "+(STAGE_COLOR[l.stage]||"#888");
+      sel.addEventListener("change",function(){ l.stage=sel.value; l._u=Date.now(); touch(); render(); });
+      td2.appendChild(sel); tr.appendChild(td2);
+      // setup
+      var td3=document.createElement("td");
+      var i3=document.createElement("input"); i3.className="cell"; i3.type="number"; i3.min="0"; i3.value=l.setup||""; i3.placeholder="0";
+      i3.addEventListener("input",function(){ l.setup=+i3.value||0; l._u=Date.now(); touch(); updateKpis(); });
+      td3.appendChild(i3); tr.appendChild(td3);
+      // monthly
+      var td4=document.createElement("td");
+      var i4=document.createElement("input"); i4.className="cell"; i4.type="number"; i4.min="0"; i4.value=l.monthly||""; i4.placeholder="0";
+      i4.addEventListener("input",function(){ l.monthly=+i4.value||0; l._u=Date.now(); touch(); updateKpis(); });
+      td4.appendChild(i4); tr.appendChild(td4);
+      // note
+      var td5=document.createElement("td");
+      var i5=document.createElement("input"); i5.className="cell note"; i5.value=l.note||""; i5.placeholder="next step…";
+      i5.addEventListener("input",function(){ l.note=i5.value; l._u=Date.now(); touch(); });
+      td5.appendChild(i5); tr.appendChild(td5);
+      // delete
+      var td6=document.createElement("td");
+      var b=document.createElement("button"); b.className="del"; b.textContent="🗑"; b.title="Remove";
+      b.addEventListener("click",function(){ if(confirm("Remove "+l.business+"?")){ store.leads=store.leads.filter(function(x){return x!==l;}); touch(); render(); } });
+      td6.appendChild(b); tr.appendChild(td6);
+      tb.appendChild(tr);
+    });
+  }
+  function updateKpis(){ var m=metrics();
+    $("k-mrr").textContent=money(m.mrr); $("k-cash").textContent=money(m.cash);
+    $("g-mrr").textContent=money(m.mrr); $("g-fill").style.width=Math.min(100,(m.mrr/10000)*100)+"%"; }
+
+  function esc(s){ return (s||"").replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+  // add lead
+  $("addBtn").addEventListener("click",function(){
+    var biz=$("add-biz").value.trim(); if(!biz) return;
+    store.leads.unshift({id:"L"+Date.now(),business:biz,trade:$("add-trade").value.trim(),
+      contact:$("add-contact").value.trim(),stage:"Researched",setup:0,monthly:0,note:"Send demo email",_u:Date.now()});
+    $("add-biz").value="";$("add-trade").value="";$("add-contact").value="";
+    touch(); render();
+  });
+
+  // weekly log (simple prompt-based tally into a stored history)
+  $("weekBtn").addEventListener("click",function(){
+    var sent=prompt("Touches sent this week?"); if(sent===null)return;
+    store.weekly=store.weekly||[];
+    store.weekly.unshift({sent:+sent||0, at:Date.now()});
+    touch(); alert("Logged. Keep stacking.");
+  });
+
+  var statusEl=$("status"),tmr;
+  function setStatusSaved(){ /* idle */ }
+  function flashSaved(){ statusEl.textContent="Saved ✓"; clearTimeout(tmr); tmr=setTimeout(function(){statusEl.textContent="Saved automatically ✓";},1200); }
+  var _touch=touch; touch=function(){ _touch(); flashSaved(); };
+
+  // expose for sync
+  window.Andries=window.Andries||{};
+  window.AndriesPipe={
+    get:function(){return store;},
+    apply:function(remote){ if(remote&&remote.updatedAt>(store.updatedAt||0)){ store=remote; save(); render(); return true;} return false; },
+    setPush:function(fn){ window.__push=fn; }
+  };
+
+  load(); render();
+})();
+</script>
+
+<!-- Optional cloud sync (shares the check-in's Firebase project) -->
+<script type="module">
+import { firebaseConfig } from "../dashboard/firebase-config.js";
+(async function(){
+  if(!firebaseConfig||!firebaseConfig.apiKey||/PASTE/.test(firebaseConfig.apiKey)) return;
+  var V="https://www.gstatic.com/firebasejs/10.12.2";
+  var appMod,authMod,fsMod;
+  try{ appMod=await import(V+"/firebase-app.js"); authMod=await import(V+"/firebase-auth.js"); fsMod=await import(V+"/firebase-firestore.js"); }catch(e){ return; }
+  var app=appMod.initializeApp(firebaseConfig), auth=authMod.getAuth(app), db=fsMod.getFirestore(app), provider=new authMod.GoogleAuthProvider();
+  var authBtn=document.getElementById("authBtn"), syncPill=document.getElementById("syncPill"), syncState=document.getElementById("syncState");
+  function st(t){ syncState.textContent=t; }
+  authBtn.style.display="";
+  authBtn.addEventListener("click",async function(){ if(auth.currentUser){await authMod.signOut(auth);return;}
+    try{ await authMod.signInWithPopup(auth,provider); }catch(e){ try{ await authMod.signInWithRedirect(auth,provider); }catch(_){} } });
+  var unsub=null,timer=null,ref=null;
+  async function pushNow(){ if(!ref)return; try{ await fsMod.setDoc(ref,{data:window.AndriesPipe.get(),updatedAt:Date.now()}); st("synced ✓"); }catch(e){ st("offline"); } }
+  authMod.onAuthStateChanged(auth,async function(user){
+    if(unsub){unsub();unsub=null;}
+    if(!user){ authBtn.textContent="Sign in to sync"; authBtn.style.display=""; syncPill.style.display="none"; window.AndriesPipe.setPush(null); return; }
+    authBtn.textContent="Sign out"; syncPill.style.display=""; st("syncing…");
+    ref=fsMod.doc(db,"pipeline",user.uid);
+    try{ var snap=await fsMod.getDoc(ref); if(snap.exists()&&snap.data().data) window.AndriesPipe.apply(snap.data().data); }catch(e){}
+    await pushNow();
+    unsub=fsMod.onSnapshot(ref,function(s){ if(!s.exists()||s.metadata.hasPendingWrites)return; if(s.data().data) window.AndriesPipe.apply(s.data().data); st("synced ✓"); });
+    window.AndriesPipe.setPush(function(){ st("syncing…"); clearTimeout(timer); timer=setTimeout(pushNow,1200); });
+  });
+})();
+</script>
+</body>
+</html>

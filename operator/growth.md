@@ -50,6 +50,13 @@ The reminder app already nudges you. This is what you do when it does.
 ## Memory / Daily log
 Newest at top. Each entry: date · what happened · what we improved · next rung.
 
+### 2026-06-30 — Command Center built
+- **✨ New tool:** `command/` dashboard — live view of the pipeline: MRR-to-goal,
+  cash collected, clients won, the funnel by stage, and an editable leads table
+  (stage, setup $, monthly $, next action). Seeded with the 12 Lafayette leads.
+  Syncs across devices via the same Firebase project (collection `pipeline`).
+- **Note:** Firestore rules need a `pipeline/{uid}` rule added for sync (below).
+
 ### 2026-06-30 — Day 2 prep
 - **✅ Rung #3 essentially done:** finalized the outreach style with Andries — a
   "lost customer" hook (reads like a missed lead) + fast honest reveal + demo link,
