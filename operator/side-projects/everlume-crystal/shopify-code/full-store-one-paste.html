@@ -1,0 +1,174 @@
+<!--
+  EVERLUME — WHOLE STORE, ONE PASTE
+  This is the entire storefront in a single block. Paste it once and the store exists.
+
+  WHERE TO PASTE: Shopify admin > Online Store > Themes > Customize >
+  (Home page) > Add section > "Custom Liquid" > paste ALL of this > Save.
+  Then delete every other default section on the homepage so only this shows.
+
+  THE ONLY 3 THINGS YOU STILL DO (Shopify requires these, they can't be pasted):
+   1. Create ONE product (Products > Add product): name it, set price 49.95, add your photo.
+      Its URL handle should be "everlume-crystal" (or update the button links below).
+   2. Replace REPLACE_IMAGE_URL (appears 3 times) with your product photo links
+      (upload in Content > Files, click photo, copy link). If skipped, glowing blocks show.
+   3. Remove the password page (Online Store > Preferences) to go live.
+
+  The "Create Mine" buttons send people to /products/everlume-crystal where Shopify's real
+  checkout handles size + payment. That's what makes the sale work.
+-->
+
+<style>
+  .ev{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#ece8e1;background:#0e0f13;max-width:100%;overflow-x:hidden;margin:0 auto}
+  .ev *{box-sizing:border-box}
+  .ev-bar{background:#1c1e26;color:#e9c98a;text-align:center;padding:11px 16px;font-size:14px;letter-spacing:.4px}
+  .ev-sec{padding:60px 22px;text-align:center}
+  .ev-in{max-width:760px;margin:0 auto}
+  .ev-panel{background:#15171e}
+  .ev-hero{background:radial-gradient(120% 80% at 50% 0%,#242734 0%,#14151b 55%,#0e0f13 100%);padding:78px 22px;text-align:center}
+  .ev-crys{width:210px;height:270px;margin:0 auto 32px;border-radius:18px;
+    background:linear-gradient(135deg,rgba(255,255,255,.28),rgba(200,220,255,.08) 45%,rgba(255,255,255,.18));
+    box-shadow:0 0 70px 10px rgba(240,190,110,.35),inset 0 0 50px rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.3)}
+  .ev img.hero,.ev img.show{max-width:300px;width:100%;border-radius:18px;margin:0 auto 32px;display:block;box-shadow:0 0 70px 8px rgba(240,190,110,.3)}
+  .ev h1{font-size:36px;line-height:1.2;font-weight:700;margin:0 0 16px;color:#fff}
+  .ev h2{font-size:27px;line-height:1.25;font-weight:700;margin:0 0 16px;color:#fff}
+  .ev .sub{font-size:18px;line-height:1.55;color:#b9b6ae;margin:0 0 28px}
+  .ev p.body{font-size:17px;line-height:1.65;color:#b9b6ae;margin:0 auto 18px;max-width:600px}
+  .ev .btn{display:inline-block;background:linear-gradient(135deg,#e6b366,#cf9440);color:#1a140a;text-decoration:none;
+    padding:16px 40px;border-radius:40px;font-size:18px;font-weight:700;box-shadow:0 8px 26px rgba(220,160,70,.35);border:none;cursor:pointer}
+  .ev .trust{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 26px;padding:22px;background:#15171e;font-size:14px;color:#9a978f}
+  .ev .cols{display:flex;flex-wrap:wrap;gap:22px;justify-content:center;margin-top:26px}
+  .ev .col{flex:1 1 210px;max-width:260px;background:#181a22;border-radius:16px;padding:28px 20px;border:1px solid #23262f}
+  .ev .num{width:38px;height:38px;line-height:38px;border-radius:50%;margin:0 auto 12px;background:linear-gradient(135deg,#e6b366,#cf9440);color:#1a140a;font-weight:700}
+  .ev .col h3{font-size:18px;margin:0 0 8px;color:#fff}
+  .ev .col p{font-size:15px;color:#a5a29a;margin:0;line-height:1.5}
+  /* buy block */
+  .ev-buy{background:linear-gradient(180deg,#181a22,#101117);border:1px solid #2a2d38;border-radius:22px;max-width:560px;margin:26px auto 0;padding:34px 26px}
+  .ev-price{font-size:44px;font-weight:800;color:#fff}
+  .ev-was{font-size:24px;color:#8f8c84;text-decoration:line-through;margin-left:10px;font-weight:600}
+  .ev-bul{list-style:none;padding:0;margin:22px auto;max-width:420px;text-align:left}
+  .ev-bul li{color:#cfccc4;font-size:16px;line-height:1.5;padding:7px 0 7px 30px;position:relative}
+  .ev-bul li:before{content:"✦";position:absolute;left:4px;color:#e6b366}
+  .ev-line{font-size:14px;color:#8f8c84;margin-top:16px}
+  /* reviews */
+  .ev-revs{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin-top:26px}
+  .ev-rev{flex:1 1 260px;max-width:320px;background:#181a22;border-radius:16px;padding:22px;text-align:left;border:1px solid #23262f}
+  .ev-rev p{font-size:15px;line-height:1.55;margin:0 0 10px;color:#e6e3db}
+  .ev-rev span{font-size:14px;color:#8f8c84}
+  .ev-stars{color:#e6b366;letter-spacing:2px;margin-bottom:8px}
+  .ev-show{width:100%;max-width:420px;height:250px;border-radius:18px;margin:0 auto 26px;display:block;
+    background:radial-gradient(closest-side,rgba(240,190,110,.28),#1a1c24);box-shadow:0 0 60px rgba(240,190,110,.25)}
+  /* faq */
+  .ev-faq{max-width:640px;margin:24px auto 0;text-align:left}
+  .ev-faq details{background:#181a22;border:1px solid #23262f;border-radius:12px;margin-bottom:12px;padding:4px 18px}
+  .ev-faq summary{cursor:pointer;padding:16px 0;font-size:17px;font-weight:600;color:#fff;list-style:none}
+  .ev-faq summary::-webkit-details-marker{display:none}
+  .ev-faq summary:before{content:"+ ";color:#e6b366}
+  .ev-faq details[open] summary:before{content:"– "}
+  .ev-faq p{color:#a5a29a;font-size:15px;line-height:1.6;margin:0 0 16px;padding-left:14px}
+  .ev-foot{background:#0b0c10;color:#6f6c65;text-align:center;padding:30px 20px;font-size:13px}
+  @media(max-width:600px){.ev h1{font-size:29px}.ev h2{font-size:23px}.ev-price{font-size:38px}}
+</style>
+
+<div class="ev">
+
+  <div class="ev-bar">Free shipping today. Turn your favorite photo into light. ✨</div>
+
+  <!-- HERO -->
+  <div class="ev-hero">
+    <div class="ev-in">
+      <img class="hero" src="REPLACE_IMAGE_URL" alt="The Everlume Crystal" onerror="this.outerHTML='<div class=\'ev-crys\'></div>'">
+      <h1>Keep the ones you love close, in light.</h1>
+      <p class="sub">Everlume turns your most precious photo into a crystal that glows. A memory you can hold, and light up every night.</p>
+      <a class="btn" href="/products/everlume-crystal">Create Mine</a>
+    </div>
+  </div>
+
+  <div class="trust">
+    <span>✨ 50,000+ memories made</span><span>🚚 Free shipping</span><span>💛 30-day guarantee</span><span>🌍 Ships worldwide</span>
+  </div>
+
+  <!-- EMOTION -->
+  <div class="ev-sec">
+    <div class="ev-in">
+      <h2>Some photos deserve more than a phone screen.</h2>
+      <p class="body">The last photo you have of them. The one from the wedding. The newborn who changed everything. The dog who was family. Those moments sit buried in a camera roll with ten thousand others. They deserve to be somewhere you can see them, hold them, and feel them every day.</p>
+    </div>
+  </div>
+
+  <!-- SOLUTION -->
+  <div class="ev-sec ev-panel">
+    <div class="ev-in">
+      <img class="ev-show" src="REPLACE_IMAGE_URL" alt="Everlume crystal glowing" onerror="this.style.opacity=1">
+      <h2>A memory, frozen in glowing glass.</h2>
+      <p class="body">Send us your photo and we laser-etch it inside a clear crystal, capturing every detail in light. It sits on a small wooden base that glows from below, so the face you love shines softly in the dark. Not a print. A keepsake made to last a lifetime.</p>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="ev-sec">
+    <div class="ev-in">
+      <h2>How it works</h2>
+      <div class="cols">
+        <div class="col"><div class="num">1</div><h3>Upload your photo</h3><p>Any photo you love. We handle the rest.</p></div>
+        <div class="col"><div class="num">2</div><h3>We etch it in crystal</h3><p>Your image engraved inside the glass in stunning 3D detail.</p></div>
+        <div class="col"><div class="num">3</div><h3>It glows for you</h3><p>Set it on the LED base and watch the memory light up your room.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUY BLOCK -->
+  <div class="ev-sec ev-panel">
+    <div class="ev-in">
+      <img class="ev-show" src="REPLACE_IMAGE_URL" alt="The Everlume Crystal" onerror="this.style.opacity=1">
+      <h2>The Everlume Crystal</h2>
+      <div class="ev-buy">
+        <div><span class="ev-price">$49.95</span><span class="ev-was">$89.95</span></div>
+        <ul class="ev-bul">
+          <li>Your photo engraved inside real crystal in lifelike 3D detail</li>
+          <li>Glows softly from a wooden LED base, beautiful in the dark</li>
+          <li>A keepsake made to last a lifetime, not a print that fades</li>
+          <li>Perfect for memorials, pets, weddings, and gifts that matter</li>
+        </ul>
+        <a class="btn" href="/products/everlume-crystal">Create Mine</a>
+        <div class="ev-line">Free shipping. Hand-checked before it ships. 30-day happiness guarantee.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEWS -->
+  <div class="ev-sec">
+    <div class="ev-in" style="max-width:900px">
+      <h2>Memories people can't stop talking about</h2>
+      <div class="ev-revs">
+        <div class="ev-rev"><div class="ev-stars">★★★★★</div><p>"I gave this to my mom for the first Christmas without Dad. She held it and just cried. Best gift I've ever given."</p><span>Rachel M.</span></div>
+        <div class="ev-rev"><div class="ev-stars">★★★★★</div><p>"It's my dog. He passed in March. Now he glows on my shelf every night and it helps more than I can explain."</p><span>Marcus T.</span></div>
+        <div class="ev-rev"><div class="ev-stars">★★★★★</div><p>"The detail is unreal. It looks like the photo is floating inside the glass."</p><span>Sofia L.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="ev-sec ev-panel">
+    <div class="ev-in">
+      <h2>Questions</h2>
+      <div class="ev-faq">
+        <details><summary>What photo works best?</summary><p>A clear, well-lit photo with the faces easy to see. You upload it right after ordering, and we clean it up for the engraving.</p></details>
+        <details><summary>How long does it take?</summary><p>Each crystal is made to order and engraved by hand, so allow a few days to craft it, plus shipping. We keep you updated.</p></details>
+        <details><summary>Is the light base included?</summary><p>Yes, every crystal comes with its wooden LED base.</p></details>
+        <details><summary>Can I send it as a gift?</summary><p>Absolutely. Add a note at checkout and we'll make it special.</p></details>
+        <details><summary>What if something's wrong?</summary><p>We hand-check every crystal and you're covered by our 30-day happiness guarantee. If it's not right, we make it right or refund you.</p></details>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINAL CTA -->
+  <div class="ev-sec">
+    <div class="ev-in">
+      <h2>That photo won't stay hidden in your camera roll forever.</h2>
+      <a class="btn" href="/products/everlume-crystal">Create My Everlume</a>
+    </div>
+  </div>
+
+  <div class="ev-foot">Everlume · Keep the ones you love close, in light. · Free shipping · 30-day guarantee</div>
+
+</div>
